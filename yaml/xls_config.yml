@@ -1,0 +1,43 @@
+---
+big_seo_client:
+  # this sample does everything, but you may do less of the following
+  # note: be careful with indentation as yaml is picky about that, so
+  #       I use 2 spaces and avoid the tab key
+  project_description: |
+    This is our big SEO client so take care of them.
+    Ensure they know that SEO is not dead, so long as we're on the job.
+    By "job" we mean wasting time and getting paid for doing very little.
+    We should rename our company to "much ado about nothing".
+  urls:
+  - http://stackoverflow.com
+  - http://www.amazon.com
+  youtube_channels:
+  - cleesmith2006
+  - RomanAtwoodVlogs
+  youtube_videos:
+  - JFRNgYeA5WA
+  - _LuWUZ1NbHQ
+  twitter_accounts:
+  - cleesmith
+  - romanatwood
+  serp_queries:
+  - cellipede video
+  - roman atwood
+
+  # maybe allow users to specify functions ???
+  # urls:
+  #   - url: "http://stackoverflow.com/"
+  #     functions:
+  #     - title
+  #     - tweets
+  #   - url: "http://222.com/"
+  #     functions:
+  #     - title
+  #     - ua
+  #   - url: "http://333.com/"
+
+# client_two:
+#   url: http://www.amazon.com
+#   youtube_channel: amazon
+#   youtube_video: _1234
+#   twitter_user: amazon

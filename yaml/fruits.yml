@@ -1,0 +1,9 @@
+description: fruits are delicious
+actions:
+  apple:
+    - red
+    - sweet
+    - tasty too!
+  lemon:
+    - yellow
+    - sour
