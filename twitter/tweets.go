@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"math/big"
@@ -9,57 +10,42 @@ import (
 	"net/url"
 )
 
-func main() {
-	f := 123.456
-	fmt.Printf("f=%T\n", int(f))
-	if false {
-		tweets()
-	}
-}
-
-type Twitter struct {
+type Tweet struct {
 	// use a known type of "big.Int" to covert json's
-	// type "number"(by default is float64), but we
-	// don't want a floating point number
+	// "number"type (a float64 by default), but we
+	// don't want a floating point number coz it's a count
 	Count *big.Int `json:"count"`
 	Url   string   `json:"url"`
 }
 
-func tweets() {
-	value := url.Values{}
-	// value.Add("url", "") // error msg from twitter api
-	// value.Add("url", "http://www.spudamazon.com/") // 0 count
-	value.Add("url", "http://www.amazon.com/")
-	qstr := value.Encode()
-	fmt.Println(qstr)
-	url := "http://urls.api.twitter.com/1/urls/count.json?" + qstr
-	fmt.Println(url)
+func main() {
+	// tweet, err := getTweets("")
+	// tweet, err := getTweets("http://www.spudamazon.com/")
+	tweet, err := getTweets("http://www.amazon.com/")
+	if err != nil {
+		fmt.Printf("err=%v\n", err)
+		return
+	}
+	fmt.Printf("tweet=%s\n", tweet)
+	fmt.Printf("tweet.Count=%v\n", tweet.Count)
+}
 
-	resp, _ := http.Get(url)
+func getTweets(aUrl string) (Tweet, error) {
+	var tweet Tweet
+	var err error
+	value := url.Values{}
+	value.Add("url", aUrl)
+	qstr := value.Encode()
+	// this should be a config constant somewhere, in case it changes:
+	twitterUrl := "http://urls.api.twitter.com/1/urls/count.json?" + qstr
+	resp, _ := http.Get(twitterUrl)
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		panic(err)
+		return tweet, errors.New("getTweets: " + err.Error())
 	}
-	fmt.Printf("body=%s\n", body)
-
-	var result Twitter
-	err = json.Unmarshal(body, &result)
-	if err != nil {
-		fmt.Println("json Unmarshal error:", err)
+	if err = json.Unmarshal(body, &tweet); err != nil {
+		return tweet, errors.New("getTweets: " + err.Error())
 	}
-	// if err := json.Unmarshal(body, &result); err != nil {
-	//   return err
-	// }
-	fmt.Printf("result=%s\n", result)
-	fmt.Printf("result.Count=%v\n", result.Count)
-
-	// data := map[string]interface{}{}
-	// dec := json.NewDecoder(strings.NewReader(body))
-	// err = dec.Decode(&data)
-	// if err != nil {
-	// 	fmt.Println("json Decode error:", err)
-	// }
-	// jq := jsonq.NewQuery(data)
-	// fmt.Println(jq)
+	return tweet, err
 }
