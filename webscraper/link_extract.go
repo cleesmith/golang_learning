@@ -62,6 +62,7 @@ func fetchPDF(wg *sync.WaitGroup, l, t string) (err error) {
 	defer func() {
 		fmt.Println(">>> defer func <<<")
 		if err != nil {
+			// this equivalent to a retry, but needs some counter or backoff value ???
 			fmt.Printf("\t calling myself: err=%v\n", err)
 			fetchPDF(wg, l, t)
 		} else {
