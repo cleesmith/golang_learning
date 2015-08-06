@@ -1,0 +1,16 @@
+Aug 2015:
+
+... start memcached at localhost:11211:
+/usr/local/opt/memcached/bin/memcached
+
+... mysql db at:
+localhost:3306
+create database=social
+user=rails+rails
+import: structure.sql for tables
+
+... build social-net, as go run does not work:
+go build
+
+... run it at localhost:8080:
+./social-net

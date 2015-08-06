@@ -12,7 +12,7 @@ import (
 
 type Tweet struct {
 	// use a known type of "big.Int" to covert json's
-	// "number"type (a float64 by default), but we
+	// "number" type (a float64 by default), as we
 	// don't want a floating point number coz it's a count
 	Count *big.Int `json:"count"`
 	Url   string   `json:"url"`

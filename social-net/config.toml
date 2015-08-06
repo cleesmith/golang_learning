@@ -1,0 +1,3 @@
+Mysql = "rails:rails@tcp(localhost:3306)/social"
+Memcache = "localhost:11211"
+Bind = ":8080"
