@@ -13,21 +13,32 @@ import (
 	"golang.org/x/net/html"
 )
 
-// Helper function to pull the href attribute from a Token
-func getHref(t html.Token) (ok bool, href string) {
-	// Iterate over all of the Token's attributes until we find an "href"
-	for _, a := range t.Attr {
-		if a.Key == "href" {
-			href = a.Val
-			ok = true
+func main() {
+	foundUrls := make(map[string]bool)
+	seedUrls := os.Args[1:]
+	chUrls := make(chan string)
+	chFinished := make(chan bool)
+	// get each page (concurrently)
+	for _, url := range seedUrls {
+		go crawl(url, chUrls, chFinished)
+	}
+	// subscribe to both channels
+	for c := 0; c < len(seedUrls); {
+		select {
+		case url := <-chUrls:
+			foundUrls[url] = true
+		case <-chFinished:
+			c++
 		}
 	}
-	// "bare" return will return the variables (ok, href) as defined in
-	// the function definition
-	return
+	fmt.Println("\nFound", len(foundUrls), "unique urls:\n")
+	for url, _ := range foundUrls {
+		fmt.Println(" - " + url)
+	}
+	close(chUrls)
 }
 
-// Extract all http** links from a given webpage
+// Extract all http links from a given webpage
 func crawl(url string, ch chan string, chFinished chan bool) {
 	fmt.Println("fetching: \"" + url + "\"")
 	// resp, err := http.Get(url)
@@ -83,27 +94,16 @@ func crawl(url string, ch chan string, chFinished chan bool) {
 	}
 }
 
-func main() {
-	foundUrls := make(map[string]bool)
-	seedUrls := os.Args[1:]
-	chUrls := make(chan string)
-	chFinished := make(chan bool)
-	// get each page (concurrently)
-	for _, url := range seedUrls {
-		go crawl(url, chUrls, chFinished)
-	}
-	// subscribe to both channels
-	for c := 0; c < len(seedUrls); {
-		select {
-		case url := <-chUrls:
-			foundUrls[url] = true
-		case <-chFinished:
-			c++
+// Helper function to pull the href attribute from a Token
+func getHref(t html.Token) (ok bool, href string) {
+	// Iterate over all of the Token's attributes until we find an "href"
+	for _, a := range t.Attr {
+		if a.Key == "href" {
+			href = a.Val
+			ok = true
 		}
 	}
-	fmt.Println("\nFound", len(foundUrls), "unique urls:\n")
-	for url, _ := range foundUrls {
-		fmt.Println(" - " + url)
-	}
-	close(chUrls)
+	// "bare" return will return the variables (ok, href) as defined in
+	// the function definition
+	return
 }
