@@ -62,7 +62,6 @@ func (this *ExampleExtender) Filter(ctx *gocrawl.URLContext, isVisited bool) boo
 	return false
 }
 
-//copy from worker.go
 func processLinks(doc *goquery.Document) (result []*url.URL) {
 	urls := doc.Find("a[href]").Map(func(_ int, s *goquery.Selection) string {
 		val, _ := s.Attr("href")
