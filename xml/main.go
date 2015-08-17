@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"regexp"
 
 	"github.com/moovweb/gokogiri"
 	"github.com/moovweb/gokogiri/xpath"
@@ -11,28 +12,31 @@ import (
 
 // 'title',       "//title/text()"
 // 'description', "//meta[translate(@name, 'ABCDEFGHJIKLMNOPQRSTUVWXYZ', 'abcdefghjiklmnopqrstuvwxyz')='description']/@content"
-// 'canonical',   "/html/head/link[@rel = 'canonical']/@href"
-// 'mobile',      "/html/head/link[@media = 'only screen and (max-width: 640px)']/@href"
+// 'canonical',   "/html/head/link[@rel='canonical']/@href"
+// 'mobile',      "/html/head/link[@media='only screen and (max-width: 640px)']/@href"
 // 'tweettotal',  "//span[.='Tweets']/following-sibling::span/text()"
 // 'following',   "//span[.='Following']/following-sibling::span/text()"
 // 'followers',   "//span[.='Followers']/following-sibling::span/text()"
 // 'views',       "//div[@class='watch-view-count']/text()"
 // 'thumbsup',    "//button[@id='watch-like']/span/text()"
 // 'thumbsdown',  "//button[@id='watch-dislike']/span/text()"
-// via any youtube video page:
+// via any youtube video page ... best choice as we can get views, thumbsup/down on the same page:
 // 'subscribers', "//*[@id="watch7-subscription-container"]/span/span[@class='yt-subscription-button-subscriber-count-branded-horizontal ']/text()"
 // via youtube user's about page:
 // 'subscribers', "//*[@id='browse-items-primary']/li/div/div/div/span[@class='about-stat']/b/text()"
-// 'subscribers', r"subscriber-count.*?>(?P<scrape>[0-9,]+?)<" ... old regex way
+// via regex:
+// 'subscribers', r"subscriber-count.*?>(?P<scrape>[0-9,]+?)<"
 // 'ga',          r"(?:\'|\")(?P<scrape>UA-.*?)(?:\'|\")"
 
 func main() {
 	// resp, err := http.Get("http://amazon.com/")
-	// resp, err := http.Get("http://cellipede.com:4235/")
+	resp, err := http.Get("http://cellipede.com:4235/")
 	// resp, err := http.Get("http://cleesmith.github.io/")
-	// resp, err := http.Get("https://github.com/cleesmith")
+	// resp, err := http.Get("https://github.com/cleesmith") // has a "UA-"
 	// resp, err := http.Get("https://www.youtube.com/user/cleesmith2006/about")
-	resp, err := http.Get("https://www.youtube.com/watch?v=Eacoqt4BtMc")
+	// resp, err := http.Get("https://www.youtube.com/watch?v=Eacoqt4BtMc")
+	// resp, err := http.Get("https://www.youtube.com/channel/UC-5pPjfUKWRo1fAZMH1qDUg")
+	// resp, err := http.Get("https://ruby5.codeschool.com/") // has a "UA-"
 	if err != nil {
 		fmt.Printf("ERROR: http.Get: %v\n", err)
 		panic(err)
@@ -64,7 +68,18 @@ func main() {
 	// xp := xpath.Compile("//*[@id='browse-items-primary']/li/div/div/div/span[@class='about-stat']/b/text()")
 
 	// get subscribers via any youtube video page:
-	xp := xpath.Compile("//*[@id='watch7-subscription-container']/span/span[@class='yt-subscription-button-subscriber-count-branded-horizontal ']/text()")
+	// xp := xpath.Compile("//*[@id='watch7-subscription-container']/span/span[@class='yt-subscription-button-subscriber-count-branded-horizontal ']/text()")
+
+	xp := xpath.Compile("/html/head/link[@rel='canonical']/@href")
+
+	re, err := regexp.Compile("(?:'|\")(?P<scrape>UA-.*?)(?:'|\")")
+	if err != nil {
+		fmt.Printf("ERROR: regexp.Compile: %v\n", err)
+		panic(err)
+		return
+	}
+	// m := re.MatchString(string(page)) // boolean
+	f := re.FindString(string(page)) // string or nil
 
 	nodes, err := doc.Root().Search(xp)
 	if err != nil {
@@ -82,16 +97,9 @@ func main() {
 		for n := range nodes {
 			fmt.Printf("\tnodes[%v]=%T=%s nodes[%v].Name()=%v\n",
 				n, nodes[n].InnerHtml(), nodes[n], n, nodes[n].Name())
-			// subnodes, _ := nodes[n].Search("bar")
-			// for s := range subnodes {
-			// 	fmt.Println(subnodes[s].Name())
-			// }
 		}
-		// for _, s := range ss {
-		// 	ww, _ := s.Search(xpw)
-		// 	for _, w := range ww {
-		// 		fmt.Println(w.InnerHtml())
-		// 	}
-		// }
 	}
+
+	fmt.Printf("re=%T=%v\n", re, re)
+	fmt.Printf("f=%T=%v\n", f, f)
 }
