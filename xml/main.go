@@ -20,13 +20,15 @@ import (
 // 'thumbsup',    "//button[@id='watch-like']/span/text()"
 // 'thumbsdown',  "//button[@id='watch-dislike']/span/text()"
 // 'subscribers', r"subscriber-count.*?>(?P<scrape>[0-9,]+?)<"
+// 'subscribers', "//*[@id="browse-items-primary"]/li/div/div[1]/div/span[1]/b"
 // 'ga',          r"(?:\'|\")(?P<scrape>UA-.*?)(?:\'|\")"
 
 func main() {
 	// resp, err := http.Get("http://amazon.com/")
 	// resp, err := http.Get("http://cellipede.com:4235/")
-	resp, err := http.Get("http://cleesmith.github.io/")
+	// resp, err := http.Get("http://cleesmith.github.io/")
 	// resp, err := http.Get("https://github.com/cleesmith")
+	resp, err := http.Get("https://www.youtube.com/user/cleesmith2006/about")
 	if err != nil {
 		fmt.Printf("ERROR: http.Get: %v\n", err)
 		panic(err)
@@ -52,25 +54,34 @@ func main() {
 	fmt.Printf("page:\n%v\nresp=%v\n---------------\n", string(page), resp)
 	// xp := xpath.Compile("/html/body/hr")
 	// xp := xpath.Compile("//title/text()")
-	xp := xpath.Compile("//meta[translate(@name, 'ABCDEFGHJIKLMNOPQRSTUVWXYZ', 'abcdefghjiklmnopqrstuvwxyz')='description']/@content")
-	nodes, _ := doc.Root().Search(xp)
+	// xp := xpath.Compile("//meta[translate(@name, 'ABCDEFGHJIKLMNOPQRSTUVWXYZ', 'abcdefghjiklmnopqrstuvwxyz')='description']/@content")
+	// xp := xpath.Compile("//*[@id='browse-items-primary']/li/div/div[1]/div/span[1]/b")
+	xp := xpath.Compile("//*[@id='browse-items-primary']/li/div/div/div/span[@class='about-stat']/b/text()")
+	nodes, err := doc.Root().Search(xp)
+	if err != nil {
+		fmt.Printf("ERROR: doc.Root().Search(xp): %v\n", err)
+		panic(err)
+		return
+	}
 	fmt.Printf("nodes=%T=%v=%v\n", nodes, len(nodes), nodes)
-	attrValue := nodes[0].String()
-	fmt.Printf("nodes[0]=%T=%v \nattrValue=%T=%s\n", 
-		nodes[0], nodes[0].String(), attrValue, attrValue)
-	fmt.Println("\n- nodes matching search:")
-	for n := range nodes {
-		fmt.Printf("\tnodes[%v]=%T=%s nodes[%v].Name()=%v\n",
-			n, nodes[n].InnerHtml(), nodes[n], n, nodes[n].Name())
-		// subnodes, _ := nodes[n].Search("bar")
-		// for s := range subnodes {
-		// 	fmt.Println(subnodes[s].Name())
+	if len(nodes) > 0 {
+		attrValue := nodes[0].String()
+		fmt.Printf("nodes[0]=%T=%v \nattrValue=%T=%s\n",
+			nodes[0], nodes[0].String(), attrValue, attrValue)
+		fmt.Println("\n- nodes matching search:")
+		for n := range nodes {
+			fmt.Printf("\tnodes[%v]=%T=%s nodes[%v].Name()=%v\n",
+				n, nodes[n].InnerHtml(), nodes[n], n, nodes[n].Name())
+			// subnodes, _ := nodes[n].Search("bar")
+			// for s := range subnodes {
+			// 	fmt.Println(subnodes[s].Name())
+			// }
+		}
+		// for _, s := range ss {
+		// 	ww, _ := s.Search(xpw)
+		// 	for _, w := range ww {
+		// 		fmt.Println(w.InnerHtml())
+		// 	}
 		// }
 	}
-	// for _, s := range ss {
-	// 	ww, _ := s.Search(xpw)
-	// 	for _, w := range ww {
-	// 		fmt.Println(w.InnerHtml())
-	// 	}
-	// }
 }
