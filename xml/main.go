@@ -10,23 +10,27 @@ import (
 	"github.com/moovweb/gokogiri/xpath"
 )
 
-// 'title',       "//title/text()"
-// 'description', "//meta[translate(@name, 'ABCDEFGHJIKLMNOPQRSTUVWXYZ', 'abcdefghjiklmnopqrstuvwxyz')='description']/@content"
-// 'canonical',   "/html/head/link[@rel='canonical']/@href"
-// 'mobile',      "/html/head/link[@media='only screen and (max-width: 640px)']/@href"
-// 'tweettotal',  "//span[.='Tweets']/following-sibling::span/text()"
-// 'following',   "//span[.='Following']/following-sibling::span/text()"
-// 'followers',   "//span[.='Followers']/following-sibling::span/text()"
-// 'views',       "//div[@class='watch-view-count']/text()"
-// 'thumbsup',    "//button[@id='watch-like']/span/text()"
-// 'thumbsdown',  "//button[@id='watch-dislike']/span/text()"
-// via any youtube video page ... best choice as we can get views, thumbsup/down on the same page:
-// 'subscribers', "//*[@id="watch7-subscription-container"]/span/span[@class='yt-subscription-button-subscriber-count-branded-horizontal ']/text()"
-// via youtube user's about page:
-// 'subscribers', "//*[@id='browse-items-primary']/li/div/div/div/span[@class='about-stat']/b/text()"
-// via regex:
-// 'subscribers', r"subscriber-count.*?>(?P<scrape>[0-9,]+?)<"
-// 'ga',          r"(?:\'|\")(?P<scrape>UA-.*?)(?:\'|\")"
+// 	'title',       "//title/text()"
+// 	'description', "//meta[translate(@name, 'ABCDEFGHJIKLMNOPQRSTUVWXYZ', 'abcdefghjiklmnopqrstuvwxyz')='description']/@content"
+// 	the above depends on libxml2, so use the more generic xpath instead:
+// 	'/html/head/meta[@name="description"]/@content'
+// 	'canonical',   "/html/head/link[@rel='canonical']/@href"
+// 	'mobile',      "/html/head/link[@media='only screen and (max-width: 640px)']/@href"
+//	https://twitter.com/cleesmith
+// 		'tweettotal',  "//span[.='Tweets']/following-sibling::span/text()"
+// 		'following',   "//span[.='Following']/following-sibling::span/text()"
+// 		'followers',   "//span[.='Followers']/following-sibling::span/text()"
+// 	https://www.youtube.com/watch?v=Eacoqt4BtMc:
+// 	'views',       "//div[@class='watch-view-count']/text()"
+// 	'thumbsup',    "//button[@id='watch-like']/span/text()"
+// 	'thumbsdown',  "//button[@id='watch-dislike']/span/text()"
+// 	via any youtube video page ... best choice as we can get views, thumbsup/down on the same page:
+// 	'subscribers', "//*[@id="watch7-subscription-container"]/span/span[@class='yt-subscription-button-subscriber-count-branded-horizontal ']/text()"
+// 	via youtube user's about page:
+// 	'subscribers', "//*[@id='browse-items-primary']/li/div/div/div/span[@class='about-stat']/b/text()"
+// 	via regex:
+// 	'subscribers', r"subscriber-count.*?>(?P<scrape>[0-9,]+?)<"
+// 	'ga',          r"(?:\'|\")(?P<scrape>UA-.*?)(?:\'|\")"
 
 func main() {
 	// resp, err := http.Get("http://amazon.com/")
@@ -63,6 +67,7 @@ func main() {
 	// xp := xpath.Compile("/html/body/hr")
 	// xp := xpath.Compile("//title/text()")
 	// xp := xpath.Compile("//meta[translate(@name, 'ABCDEFGHJIKLMNOPQRSTUVWXYZ', 'abcdefghjiklmnopqrstuvwxyz')='description']/@content")
+	// '/html/head/meta[@name="description"]/@content'
 
 	// youtube user's about page, get both subscribers and total views:
 	// xp := xpath.Compile("//*[@id='browse-items-primary']/li/div/div/div/span[@class='about-stat']/b/text()")
@@ -70,7 +75,7 @@ func main() {
 	// get subscribers via any youtube video page:
 	// xp := xpath.Compile("//*[@id='watch7-subscription-container']/span/span[@class='yt-subscription-button-subscriber-count-branded-horizontal ']/text()")
 
-	xp := xpath.Compile("/html/head/link[@rel='canonical']/@href")
+	xp := xpath.Compile("/html/head/link[@rel='canonical']/@href") // amazon.com
 
 	re, err := regexp.Compile("(?:'|\")(?P<scrape>UA-.*?)(?:'|\")")
 	if err != nil {
