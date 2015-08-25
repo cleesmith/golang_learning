@@ -53,12 +53,19 @@ func main() {
 	fmt.Printf("Database: %s %v (Max conn. %d), Enabled? %v\n",
 		config.DB.Server, config.DB.Ports, config.DB.ConnMax,
 		config.DB.Enabled)
-	fmt.Println("Servers:")
+
+	// loop over servers:
+	fmt.Println("\nServers:")
 	for serverName, server := range config.Servers {
 		fmt.Printf("\t%s (%s, %s)\n", serverName, server.IP, server.DC)
 	}
-	fmt.Printf("Client data: %v\n", config.Clients.Data)
-	fmt.Printf("Client hosts: %v\n", config.Clients.Hosts)
+	// grab specific server:
+	fmt.Printf("\nconfig.Servers['alpha']=%T=%v\n", config.Servers["alpha"], config.Servers["alpha"])
+	// grab field value for a specific server:
+	fmt.Printf("\nconfig.Servers['alpha'].IP=%T=%v\n", config.Servers["alpha"].IP, config.Servers["alpha"].IP)
 
-	fmt.Printf("\nconfig:\n%v\n", config)
+	// fmt.Printf("Client data: %v\n", config.Clients.Data)
+	// fmt.Printf("Client hosts: %v\n", config.Clients.Hosts)
+
+	// fmt.Printf("\nconfig:\n%v\n", config)
 }
