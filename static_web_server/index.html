@@ -1,0 +1,1728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>thoughts</title>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <meta charset="UTF-8">
+  <meta name="author" content="Chris Smith">
+  <meta name="description" content="thoughts, programming, ruby, python, c, java">
+  <meta name="keywords" content="thoughts, programming, ruby, python, c, java">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+  <link href='http://fonts.googleapis.com/css?family=Merriweather' rel='stylesheet' type='text/css'>
+  <style type="text/css">
+    pre {
+      font-family: 'Merriweather', serif;
+      font-size: 14pt;
+    }
+  </style>
+</head>
+
+<body style="margin-top:30px; padding-top:70px;">
+
+<nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> chris smith</a>
+    </div>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="https://www.youtube.com/user/cleesmith2006/videos" target="_blank">videos</a></li>
+        <li><a href="https://github.com/cleesmith?tab=repositories" target="_blank">projects</a></li>
+        <li><a href="about.html">about</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+<div class="container">
+
+<pre>
+Moon Tech Maybe:
+
+While watching videos on YouTube I've noticed a trend. Lots of folks refer
+to commands such as "sudo apt-get install whatever" as "entering code".
+There are many similar examples where the word "code" is used.
+Good or bad? I'm not sure. But it's interesting to see how many people
+are interested in coding. I think it's related to the word "apps"
+becoming so popular. The idea of coding/apps has become so pervasive as
+to be common. To me, this seems related to my notion that something
+new and different is coming down the pike. Perhaps, it is really just
+related to the fact that most folks use computers daily at work and at
+home as well constantly attached to their smart phones.
+
+The moon is tugging on my brain, perhaps, as I am unable to sleep. Or
+just too much coffee yesterday? So here I am perusing the internets
+and playing with emulation software on the RPi2 -- and drinking
+even more coffee, those magic beans. While I have several
+pi's with cameras all around the house keeping an eye on things,
+as it were, I really want to find the time to build and play with
+the GoPiGo robot kit. It's been sitting in the box for months.
+Perhaps I can use it as a porch bot. Porch bot could say "Hello" to the
+postal lady or UPS guy, while using OpenCV for facial recognition to
+look them in the eyes. Or just mess with the neighbor's cats -- who spend
+more time at my house than they do at home.
+
+I still can't get over how fast a Go program -- using goroutines and
+a single channel -- can gather social media counts. I pushed it to
+10,000 urls and all of that still took less than 2 seconds. Which makes
+sense, of course, as the elapsed time is predictably the time it takes
+for the longest api call -- well, plus a hair more for the overhead
+related to the threads/scheduling/GC/etc. I am sure some defensive
+coding will be needed to avoid quotas and throttling -- that is, be
+a good internet consumer and citizen.
+
+Also, it is easy to read/write/update xlsx spreadsheets using <a href="https://github.com/tealeg/xlsx" target="_blank">xlsx</a>,
+and they are importable by Excel, Libre, Numbers, and Google's Spreadsheets.
+</pre>
+
+<pre>
+Go Fast Maybe:
+
+Just tested <a href="https://github.com/cleesmith/enseomble" target="_blank">Enseomble</a> using goroutines to grab the social media counts:
+tweets, stumbleupons, pinterests, and linkedins for 215 urls in 1 second
+of elapsed time. Doubling that to 430 urls yields the same elapsed time.
+Wow, very impressive!
+Enseomble will become, in time, a real powerhouse of a tool, well, for the
+few folks/family that I know still doing SEO work. Otherwise I have no use
+for SEO stuff. However, some of the concurrency techniques can be applied
+to some of my previous software -- especially Uni2EsPy, well, after
+renaming it to Uni2EsGo of course. Although, it might be too fast for
+Elasticsearch and overload the indexing process. But when dealing with
+"big data" speed is usually a big asset. I wonder if Elasticsearch/Lucene
+could be rewritten in Go -- probably not, as they would have written
+it in C/C++ to begin with.
+
+As someone specializing in internet security this makes me worry about
+Go's simplicity and speed opening doors for those "bad actors"
+with lesser coding skills. That's not a good thing. Especially with the
+easy distribution via a self-contained binary. A positive take away from
+that is future job security, for me. In other words, I can continue coding
+software to guard against other software.
+</pre>
+
+<pre>
+Joe Sixpack Maybe:
+
+I often use the term "Joe Sixpack" to describe those who can only code in
+python, javascript/node.js, php, and sometimes ruby on rails. I don't
+really mean it as derogatory remark -- after all, an effort was made -- rather
+I'm referring to their quick-dirty-seat-of-your-pants-cowboy coding approach.
+They seem capable enough to use libraries and hook various pre-built code
+together into a somewhat functioning app. Except for one-off's does that approach
+to coding really result in a useful app. Well, I've examined a lot of these on
+github and the answer is NO. It's as if they don't realize that spending some
+time upfront to think about -- i.e. design -- the intent of the app would pay
+off in the end. This is a recurring theme. It's become so common it should
+have a name -- like what? -- maybe call it "slappy vamps". Wait, as their
+approach is really about gluing code together an even better name is
+"Elmers" -- implies both glued and unenlightened at the same time ... sweet.
+There sure are a lot of Elmers on github.
+
+No, my opinion is not a snobby ivory tower viewpoint from a computer science elitist.
+Rather it is simple construction.
+Would you build a deck onto your house without a plan?
+Of course not, while it might work, kind of, it would look awful and be wobbly.
+There are so many projects like this on github it should be renamed to wobblehub.
+Wobbly Elmers.
+
+Aside: python's tulip is called asyncio and has been for a while now.
+Also, it's evented similar to node.js, which is similar to the many things
+based on EventMachine in ruby-land. All based on the reactor pattern.
+From the asynio docs:
+"An event loop runs in a thread and executes all callbacks and tasks in the same thread."
+
+The spaghetti-like-callback-hell that is evented coding results in a nightmare to grok.
+
+This <a href="http://tleyden.github.io/blog/2014/10/30/goroutines-vs-threads/" target="_blank">article</a> provides a brief summary.
+</pre>
+
+<pre>
+Grand Delusions Maybe:
+
+If it takes someone over a year to code a simple web app, do they really possess
+a mastery of anything. And would any thinking person want to follow in their footsteps.
+August 18, 2014 is over a year ago, that's not less than a year -- they have bad math too.
+
+Locking one's self into linux/python/vim/git is silly and wrongheaded. Just
+because Microsoft/whatever screwed you over in the past and you had to
+re-learn/re-purchase something is hardly a justification for anything -- well,
+except for avoiding any software that's not free and open source.
+Get over it.
+Free your mind by learning.
+
+Learning is a huge part of life -- sometimes a chore, sometimes a joy.
+
+One could have said:
+"
+  No! All I ever need to do is crawl.
+  I tried to stand and walk but I fell -- it's too difficult.
+  Crawling will always be there for me.
+"
+I hate to say it but that's utterly stupid. We all get our itty bitty feelings
+hurt and fall, sometimes, so just get over it and live a learning life.
+Not to state the obvious but it is possible to learn more than one operating
+system, more than one programming language, more than one editor, and more
+than one source control system -- and use all of them daily, well, for hackers anyways.
+It's called learning -- try it -- life's a lot more fun that way.
+
+For some reason, all of this reminds of that scene from the movie Tombstone where
+Doc Holliday shoots Johnny Ringo in the head, then says "You're no daisy at all".
+Boy, they sure talked funny back then, if the movie is an accurate portrayal.
+Macho gun play and floral speak, together, who knew.
+</pre>
+
+<pre>
+Loins Girded Maybe:
+
+Do I like this new font?
+Give it some time, but it seems more readable with smaller paragraphs.
+
+It's best to apply a kind of "pomodoro technique" to writing/coding. The final
+results are always better if one doesn't spend excessive periods of time doing just
+one thing. Anyone still doing those "all nighter" coding bouts usually have
+the worst code and design ideas -- caffeine driven jittery code -- and it shows
+during code reviews. There should be, if there isn't already, an online code
+review web site where folks rip your code a new one -- as they say.
+
+Maybe call it "Girded Loins" or "Ripper" -- this should be a part of every github project:
+git push and rip -- which unleases a horde of rippers, well, for a popular project.
+There should be a github badge indicating, just like "build passing", that a
+project has been ripped a new one, maybe "loins girded" or "ripped". Sure, the
+project owner won't like it, but it's a bit like having automated tests in a project
+that "kind of" gives one a bit more confidence about using said project. Folks
+kind of do this sometimes on StackOverflow, so I'm sure it would be a hit on
+github -- it's natural to rant/rave about someone else's work. Think of that
+skit from Monty Python where the villagers say "she's a witch" -- now that's the
+essence of a code review. Sure, it should be constructive criticism to make one a better
+programmer, but, admit it, it's more fun to just rip them a new one. Criticism
+is criticism and occassionally some of it gets through to the one being ripped
+despite all the drama -- I've actually witnessed tearing/crying over code.
+Life's emotional.
+
+Github is back to it's old self today -- no more <a href="https://status.github.com/messages" target="_blank">DDoS attacks</a>.
+</pre>
+
+<pre>
+Raw Fish Maybe:
+
+I'm considering making the long drive down the mountain, then back up a mountain, and
+so on to Roanoke and eat some Sashimi. It's good but not the same as in Japan.
+
+Poking around on github, I've noticed a few of the brightest rubyists
+are increasingly working on Erlang/Haskell/Go projects. The ruby stars are
+not as bright anymore, sad, or am I just a sentimental old fool. This doesn't
+seem to be happening in the Joe Sixpack python community.
+Change is the only constant, and paradoxically ever-accelerating -- for most things.
+
+What's the most vlogs/blogs anyone views on a daily basis?
+I view about 10 vlogs (not all change daily), and about 20 blogs (update more frequently).
+But the trend seems to be that most folks run out of things to say -- they've
+shot their wad as it were. Well, except for the marketing and snake oil salesman
+types who never seem to be at a loss for words. Although the quality of their
+words is very low and borderline useless -- most times. If I were to do a
+serious blog, not like this one, it's best to have a theme that runs like a
+current through a series of articles. That always seems to yield the most
+interesting and focused writing -- be it ranting or scholarly.
+
+Even if this is not a serious blog, but rather a distraction while I'm thinking
+about some coding issue, I should at least pick a font that's easy to read.
+This one seems nice for us older folk:
+  &lt;link href='http://fonts.googleapis.com/css?family=Merriweather' rel='stylesheet' type='text/css'&gt;
+  &lt;style type="text/css"&gt;
+    pre {
+      font-family: 'Merriweather', serif;
+      font-size: 14pt;
+    }
+  &lt;/style&gt;
+... found it <a href="https://www.google.com/fonts" target="_blank">here</a>.
+</pre>
+
+<pre>
+Killer Diller Maybe:
+
+So far I'm liking TOML over YAML -- none of that indentation nonsense (like python).
+
+Looks like github was attacked this morning but recovered nicely. Probably a
+monthly occurrence for them. Being popular has a downside.
+
+I need to do a video of Enseomble versus creepy stalker dude's program.
+The rabbit versus the tortoise (ok, it's so slow maybe a slug is more appropriate).
+No moral here, though, the tortoise will lose.
+
+Usually it doesn't pay to obsess over speed/performance, but in the case of a
+tool it's a huge advantage to be fast/reliable. What if the *nix command line
+tool "grep" was written in python? Yep, no one would use it. That's why it's
+written in C. The "original recipe" C no less.
+
+Really enjoying the screened in porch today. The weather is perfect -- low
+temp, cool breeze, fresh mountain air, clear blue sky.
+Is there a better planet?
+Of course not, that's why the aliens come here.
+They're not "invading" their "vacating" -- that's us, the vacation planet.
+"Go to earth, scare the locals into peeing their pants, scan their meager brains,
+become a part of the human's lore -- you name it. Then return to Dingus 3.14159265359
+refreshed and invigorated."
+</pre>
+
+<pre>
+Yielding Reed Maybe:
+
+<a href="https://glyph.twistedmatrix.com/2014/02/unyielding.html" target="_blank">A very interesting article</a>.
+Concurrency seems a tough nut, for some folks, but well worth the effort I think.
+
+I don't like the package development flow I'm using to develop Enseomble. There is
+way too much bouncing back/forth with github to be productive -- and I guess due
+to github's popularity it's sluggish sometimes. Every Joe Sixpack has a repo.
+Also, since Enseomble is not really a package, yet, it makes more sense to have
+a simpler folder structure. This will be one of the todo's for today.
+</pre>
+
+<pre>
+Dry Land Maybe:
+
+The time has come to evolve. Except for prototyping software, it's time to leave
+our gills (i.e. gobal interpreter lock GIL) behind and walk on dry land.
+
+Languages like Ruby and Python have a serious limitation called the GIL.
+These and other languages also suffer from mutable state and shared everything.
+While this is helpful for newbie programmers, eventually it becomes way too restrictive.
+Hence, the re-coding into C/C++ (maybe even Go). I feel this has really slowed
+down the progress of software. A sort of dumbing down to accomodate those who do
+not treat software development as a craft. In effect, years have been wasted
+on what amounts to toy software. While fun, they are just a sideshow.
+Perhaps there's no solution on the horizon and we just have to endure the
+horde of Joe Sixpack software -- ignoring it all while hoping for a real breakthrough.
+It's always overhyped and disappointing anyways.
+</pre>
+
+<pre>
+Alien Soaps Maybe:
+
+After buying Amazon TV, I find I don't watch cable tv anymore. I don't miss the commercials.
+Sure, amazon prime is $100/year -- i.e. a bunch of free movies/shows -- but I also
+order a lot stuff so this saves on the shipping (in 2 days usually).
+
+Oddly, I've become addicted to two shows: Extant and Under the Dome. They are both
+really like soap operas. Extant is a bit more interesting -- with the idea of
+machine/AI versus life/biology. And both shows have the usual alien invasion stuff.
+Unsuspending disbelief for a moment, if aliens have been here for a long time, well,
+at least since Roswell, why are they so slow about taking over. If they are
+superior to us then what's with all the cloak and dagger. Sure it's fun to ponder,
+but really, let's see some real action already (famous last words, huh?).
+
+Watching these two shows is really out of character for me, as I usually just enjoy
+shows like Nova, Nature, Secrets of the Dead, Frontline -- see the PBS theme there.
+Even though, PBS has commercials now and that's on top of those annoying pledge drives.
+Now why would I donate money if they have commercials? Also, how low is it to
+actually ask people to include PBS in their will -- really?
+Even your own family, the ones you love, don't do this?
+Who thought that was a good idea?
+
+Perhaps, marketing folks are the aliens -- kind of like the Borg --
+"not buying is futile, you will assimulate our products/services".
+Excepting seven of nine -- beam me up -- even the Borg had a sense of aesthetic pleasure.
+</pre>
+
+<pre>
+Too Heavy Maybe:
+
+If someone is pushing, via vlogs/blogs/etc, something there is always an ulterior motive.
+Always!
+Pushing is an odd behavior, sure, it's very common -- but why?
+Do humans really need to manipulate other humans?
+If something has an innate value then why can't it be enough to stand on it's own
+merits without all of the pushing. Perhaps that "something" would be more
+valuable if less time was spent on pushing it and more time spent on
+improving it.
+
+It's very common on YouTube with all of the "don't forget to subscribe" and those
+annoying pop up boxes that cover part of the video. I feel insulted. As if
+they are saying that I can't decide on my own whether to click subscribe/like/dislike.
+Yet there I am watching the video while being "pushed" to do more. Why?
+Sometimes this is so annoying I just stop and do something else instead.
+Isn't it enough that I took the time/effort to watch their video?
+
+In fairness, not all youtubers "push" and are only sharing something. They even express gratitude.
+Although, I'm not entirely sure why they are grateful. Because I watched
+their video? Perhaps the driving force behind all of this is popularity, of
+a sort. A vanity -- seeing your name associated with numbers of other people.
+I must be lacking in whatever appeal this holds for other people -- I don't
+even make that many videos or check my numbers, but I am aware that my
+security videos are watched daily. Of course, I did those videos as reminders
+to myself for actions/tasks that I know I will repeat at some future time.
+
+Is it really as simple as just making a name for themselves?
+Should or does anyone truly see and value themselves through the eyes of others?
+We are not of one mind and our interfaces with each other are not tightly
+coupled. We never truly know what someone else is thinking, yet, we often
+pretend that we do know. Given all of that, why would we value ourselves
+based on the actions and words of others. Doesn't it make far more sense to derive
+our true value from within. Of course, that's easier said than done as we
+are constantly yipped at by an internal dialogue filled with expectations,
+fears, worries, and all sorts of emotions. It's complicated, huh?
+
+Human behavior is almost as interesting as programming, wait, programming is just
+human behavior overlaid onto a machine. Me thinks those anthropology courses of long
+ago have left a life long impression -- still fascinated with life.
+</pre>
+
+<pre>
+Hot Potato Maybe:
+
+Guys seem to have four hair types:
+1. Pointy hair, you know, the overly ambitious/management types
+2. Long hair, what use to be hippies, but now, not so much -- hippies were cool
+   But what does that image say nowadays?
+   My hair supports fossil fuels?
+   Stand back I am mostly snake oil?
+3. Unkempt hair -- they have no idea their hair is like Bob Dylan's
+4. No hair or almost none, like me, I just can't be bothered
+   with fishing that goop out of the bath drain -- plus it
+   takes about a minute to cut my hair, like mowing the lawn only at warp speed
+
+Speaking of pointy hair, that reminds me of that DHH (Rails) guy
+and that instant blog video -- the rails killer video back
+in the day. I wasn't impressed. What did impress me about him
+occurred years later and in three ways:
+- he doesn't rule the rails repo with an iron fist - malleable fist maybe
+- he didn't want to be rich but rather enjoy his work while making enough money to live well
+- he doesn't require every line of code in an app to have tests,
+  some folks go overboard yet their app still has bugs -- why?
+  coz it's programmers that write the tests -- get it
+
+I can't really complain about cookie cutter Rails' jobs as they have allowed me to
+put two kids through college, use Ruby (manna/joy) almost daily, buy a house in the mountains,
+buy delicious healthy food, read books, listen to music, draw/paint, flintknapp,
+play with electronics/programming, and spend lots of free time pondering/writing
+stuff like, well, like this stuff.
+Kind of a dream come true -- for me anyways.
+Don't wanna be a start up with zillions in the bank. Don't wanna pied pipe anyone anywhere.
+Life is too sweet to waste with/without material stuff.
+MMM Bop.
+</pre>
+
+<pre>
+No Grok Maybe:
+
+It's really difficult to believe that some people can't understand Ruby
+and don't use it more at least for prototyping.
+Even if you don't need to use Ruby everyday, it is still great for
+expanding your mind and wrapping your head around some important concepts.
+It's called growth as a programmer and as a person.
+Yet, there seems to be this camp of folks who are stuck using PHP and Python.
+As if they "go in" and can't "get out". Also, I've noticed that a lot of these
+folks get excited about UI/UX -- HTML, CSS, Javascript, graphics -- which
+is important/cool, but not programming.
+They just don't see other horizons -- that's a pity and a shame.
+
+I can understand those who don't want to try GoLang, that makes sense, as
+they probably lack a sufficient background in C/C++. So they think slow
+is good enough. That's ok if one is just playing with a GoPiGo robot or
+calling some slow api's or scraping a few web pages (you know, silly SEO stuff).
+It's the reliance and dependency on somewhat questionable python libraries/packages
+that are a lure for the lazy and the weak minded. Also, can those packages really
+be trusted -- i.e. does anyone really take a hard look at what they just invited
+to their little party ?
+Is "oh that's a popular package, everyone uses it" valid reasoning ?
+No!
+
+Sure, I play with python a lot, but to me python is not the first
+language I reach for when trying to explore/solve a real world problem.
+It's Ruby.
+After all, anything you can do in python you can do in ruby with less code that's grokkable.
+Then after much experimentation to wrap my head around the problem to be solved,
+I almost always transform the ruby solution into C/C++ (and increasely to Go).
+My typical work flow is this:
+- achieve a solution in ruby that is clean and readable but often way too slow
+- then transform that into C/C++/Go which is less clean and more challenging
+  to read but is as fast as possible (without dropping down to machine coding)
+
+Speed is killer diller -- a machine's greatest asset -- always remember this.
+
+There's a recent example where I created a SEO data gathering program for a friend,
+as she couldn't find anything to do the job in a simple and reliable way. Also, she and
+her clients did not want to be locked in to a Google-only solution and having their
+data stored in a cloud with questionable security, instead she wanted just an
+XLS file that she and her clients could use as they see fit.
+So I wrote <a href="https://github.com/cleesmith/cellipede_ruby" target="_blank">Cellipede</a> in Ruby, and I'm in the process of rewriting it in Go as <a href="https://github.com/cleesmith/enseomble" target="_blank">Enseomble</a>.
+Because of Go's concurrency, Enseomble will be so fast it will melt your cores -- yes, all of them.
+
+Enseomble is a good choice for a name, I think, as an "ensemble" is a group of items
+viewed as a whole rather than individually -- leaving the door wide open for future expansion.
+Just focus on simplicity at first, well, always maybe. And since it's a tool that will
+be used repeatedly make it very fast, reliable, and flexible as there's no way to
+control the internets (stay aware of sluggish/unresponsive/throttled api's and web pages).
+</pre>
+
+<pre>
+Whacky APIs Maybe:
+
+Who designed all of these APIs like twitter, facebook, etc. ?
+Every one of them yield inconsistent responses and different
+JSON response structures depending on the input. What a mess.
+Thankfully, someone wrote <a href="https://github.com/Jeffail/gabs" target="_blank">gabs</a> which helps to handle
+"dynamic or unknown JSON structures in golang".
+
+However, one is still stuck with handling the JSON default of
+float64 for all numbers. My solution is to just convert numbers
+into strings, after all, the code is not doing math on them, rather
+they are just being inserted into a spreadsheet -- where strings
+that look like numbers magically become numbers.
+</pre>
+
+<pre>
+Known Source Maybe:
+
+At first I didn't like how "go get" refers directly to the source of a package.
+But that's just a habit from python's and ruby's way of dealing with external
+packages/libraries. Using "go get" is better in that one can see exactly where
+a package is coming from and then peruse the code to verify it's what you
+want to be using. Instead of all that "pip" and "gem" hassle and vagueness.
+</pre>
+
+<pre>
+Seo Ensemble Maybe:
+
+Well, after googling it seems that seotec and senops are taken.
+So I've renamed it to <a href="https://github.com/cleesmith/enseomble" target="_blank">Enseomble</a>.
+</pre>
+
+<pre>
+Crystal Ball Maybe:
+
+Up voted having Digital Ocean offer Snappy Ubuntu distro for containers.
+
+Linux/Unix days are numbered. The hint is deeply buried, but clear if
+you give it some thought, in recent ideas/words like:
+embedded, micro, tiny, disposable, container, IoT, Arduino, RPi, and so on.
+It's coming. What's coming?
+I don't know, but I can see something is coming.
+An evolutionary step forward for machines/us.
+It might even be here already, as governments are always ahead of what's
+publicly available -- e.g. they had the internet long before anyone knew,
+and they probably wish they never let that cat out of the bag.
+
+This probably means that programming/coding/hacking/whatever is dead, just
+like SEO, and we just become managers of the machines. Coding will become a hobbyist
+thing, similar to the Stone Age hobby of flintknapping (I'm one of the very few).
+A sad thought, well, if you're a programmer.
+Oh well, I doubt many folks miss riding a horse to wherever.
+Change is inevitable and most times ever-accelerating.
+
+Aside: I don't recommend flintknapping as a hobby as:
+- it's hell on your thighs and especially your hands -- cuts, scrapes, and lots of blood
+  Obsidian will slice you up and give you the hands of a Neanderthal zombie.
+  And, no, I do not have a unibrow.
+
+- it's hard to find the proper rocks, and I waste a lot of time wondering around
+  the wilderness looking at rocks -- perhaps that's what Big Foot is doing too,
+  perhaps I am Big Foot
+
+I've been addicted to knapping for a long time, going back to when I was an
+anthropology/archaeology major at the first college I attended -- after deciding that
+pre-med was not for me. Of course, later I decided that anthropology/archaeology
+was not for me after discovering electronics then computers then programming.
+Now that's how one should come to computer science. By that I mean it's great to
+have a liberal arts background before focusing intently on mathematics and
+computer science. And even then one should bring a bit of skepticism to some of the
+dogma that's out there. Further, knapping is really about problem solving. As
+every rock is different. And as someone once said about sculpting, one just
+has to "discover" what's already in the rock. It's intention or purpose. The
+rest is just a matter of chipping away. It's the same with coding when done
+by someone with a certain level of mastery.
+</pre>
+
+<pre>
+Snake Oil Maybe:
+
+A snake oil salesman doesn't always refer to selling stuff, rather it may
+refer to proposing the wrong way to code -- yes, there are wrong ways to do it.
+It's not all subjective, as lots have been learned about coding over the years.
+To ignore those facts is simply to repeat the mistakes of the past.
+
+Being near programmers doesn't make you a programmer, rather it's something
+you become by doing it every day. Most importantly by reading and
+paying attention -- i.e. stay interested in discovering new ways/things.
+
+Name dropping does not mean you know anything about anything other than
+reading wikipedia, we can all do that -- so enough with the Jay Miner,
+Dennis Ritchie, Ken Thompson (GoLang dude), Richard Stallman, Linus
+Torvalds, et al ... while cool, they are not gods.
+
+Anytime you read blogs containing any of the above, beware, as you've
+just encountered someone who's keen on drawing attention to themselves
+at any cost. Sure, it will be in the guise of being helpful and
+authoritative but it's really all about vanity and self-aggrandisement.
+You know, they see themselves as a "pied piper" and you as lemmings being
+led into the sea -- an old myth, but it's still a cult mentality
+and dangerous. It's the conflict caused by a "pied piper" truly being
+a loner yet wanting to have others follow them. Therein lies the danger.
+</pre>
+
+<pre>
+Wrong Headed Maybe:
+
+- Microsoft did not invent/write SQL Server, Sybase did, MS just made it worse
+
+- for some reason, I never liked Commodore nor the Amiga -- I wonder why
+</pre>
+
+<pre>
+May Be Maybe:
+
+<a href="https://www.youtube.com/watch?v=dBM7i84BThE" target="_blank">what's with all the "... Maybe's"</a>
+<a href="https://www.youtube.com/watch?v=LY-apgB5bnA" target="_blank">coding</a>
+<a href="https://www.youtube.com/watch?v=KeaehxEdpgo" target="_blank">snowy</a>
+<a href="https://www.youtube.com/watch?v=rh3eNb16uC0" target="_blank">baby</a>
+<a href="https://www.youtube.com/watch?v=tDCxP73VJJM" target="_blank">zombie</a>
+<a href="https://www.youtube.com/watch?v=YqUSpTAqQHE" target="_blank">pho</a>
+... all catchy, huh?
+</pre>
+
+<pre>
+Code Me Maybe:
+
+1. a microservice(s) written in Go to handle social counts and html scraping/crawling
+   - input: JSON array of URLs
+   - output: JSON array of URLs with values for each
+
+2. rewrite Uni2EsPy in Go as Uni2EsGo?
+   think about this one, as python's slowness may be a benefit during bulk indexing
+   into ES (which is also slow, especially if one is confirming writes to disk), and
+   if the bulk indexing is performed concurrently this may overwhelm ES to the
+   point of being too troublesome
+</pre>
+
+<pre>
+Compile Me Maybe:
+
+Aug 19, 2015:
+cross compiling in Go 1.5 has changed, it's even easier with no fuss:
+- just download:
+  go1.5.darwin-amd64.pkg  Installer OS X  64-bit  74MB
+
+- don't do ./make.bash for cross compiling as all environments are now available, so just do:
+  env GOOS=linux GOARCH=arm go build main.go
+  env GOOS=windows GOARCH=amd64 go build main.go
+
+- note: renaming the executable binary after it has been compiled is ok, it still runs
+
+Real men code/hack/program in Go -- ok, that includes C/C++ too.
+
+Cross compilation is Go's ace in the hole -- pure killer diller -- oh, it's on now.
+</pre>
+
+<pre>
+Eat Me Maybe:
+
+Despite all of the rain this morning and the oppressive humidity, I was still
+able to get in 10,000+ steps today.
+
+I just got the results of a blood test from the doctor yesterday.
+The results were amazing. My A1C, triglycerides, etc. are all back to normal.
+This has all changed since the way-over-the-top readings back in mid May 2015.
+I really did not believe that the doctor/nutritionist suggestions would actually work.
+I've always believed that you had to exercise to near exhaustion, i.e. nauseated, every
+day to get/stay in shape -- I had that runner's mentality.
+But their suggestions have worked with just walking and eating way more veggies every day.
+Both the doctor/nutritionist seemed very surprised that I actually listened and followed
+their advice. Apparently most people do not. While most people probably want
+to feel better, they just don't or can't make it a habit for some reason. Hopefully,
+I don't backslide, as they say, too much -- although pizza is seriously calling my
+name especially on Fridays, and sometimes there's a ringing sound of tacos from Taco Bell,
+or one of those huge burritos from Chipotle -- a 1,200+ calorie behemoth with 100+ carbs,
+which should come with a side order of heart bypass surgery.
+</pre>
+
+<pre>
+Juvenile Adult Maybe:
+
+One might say that Go will separate the men from the boys. The "boys" will continue
+to program in python/ruby/javascript, while the "men" will program in Go and C/C++.
+The toy apps that are programmed by the "boys" will only be useful on a personal level.
+For example, using python to blink LEDs on a raspberry pi, or gather some trivial
+SEO data via serial HTTP requests (let the real "men" handle the concurrency).
+Of course if one achieves a thorough background in Lisp/Ruby then they may be able
+to make the leap to Go/C/C++. Although I think learning C/C++, then Lisp/Ruby(OOP),
+and then Go is a much better path to becoming a well rounded programmer.
+
+No offense intended, so please substitute girls for boys and women for men.
+</pre>
+
+<pre>
+Infict Me Maybe:
+
+Somehow I caught a cold, in August, who knew that was possible. I suspect
+Walmart shopping to be the source -- kingdom of snot, mucous, and other
+airborne/touch pathogens.
+
+Just finished testing cross compiling a simple Go program for Mac OS X, Linux
+ARM (raspberry pi), and Windows. They all worked perfectly when copied to
+the target system and executed. This alone makes Go a killer diller, not
+to mention how easy it is to set up cross compile and how fast compiling
+occurs (just seconds). The Go program I created simply grabs a web page and
+uses xpath to scrape content -- all without any dependencies, yes, not even libxml2.
+Yet another big win for Go, as its built-in libraries are stellar, once you
+get the hang of where to look and how to use the docs.
+Super fast compiles, blazing execution speed, and true portablility
+may just be the death knell for interpreted programming languages (gonna miss Ruby).
+So far I am very impressed with Go, but that's because my programming
+background is mainly C/C++. Go won't replace C/C++ but the other languages
+are now under threat. Of course, if COBOL is still around no language should
+feel all that threatened -- they will just become less popular.
+
+Also, we have all been here before, well, kind of, with Java. But having to haul
+around a JVM isn't fun, the dreaded OOM, and don't forget how buggy/slow it was years ago.
+
+Imagine that, in 2015, no less, write once in Go then run everywhere.
+</pre>
+
+<pre>
+Sing It Maybe:
+
+<a href="https://www.youtube.com/watch?v=xWwUJH70ubM" target="_blank">... paved paradise and put up a parking lot ...</a>
+
+A huge pile of rock just arrived and now I'm waiting on the tractor to be delivered.
+With the remainder of this 100% humidity day spent pushing rock around -- kind of
+an exercise in detoxing the body by sweating profusely.
+
+My "parking lot" of a backyard -- well -- now, looks like a parking lot, again,
+with the gravel/rock all pushed around. What a long sweaty day yesterday was
+-- I'm still tired from all of that work. Yes, the tractor really did
+the hard part, but still I had to steer it, plan it, use the right lever
+at the right time, and so on. Very exhausting. Normally I read and type
+all day, every day, so manual labor is a tough nut for me. It's a story
+for another time as to how my backyard became a parking lot done by
+a landscaper who turned out to be a registered sex offender in two states.
+
+Unfortunately there are some odd people out there -- diversity, huh?
+
+For example, the creepy stalker seo dude continues to write about me.
+It's as if he has no self-motivation and derives some sort of energy
+from juxtaposing me and whatever totally useless coding he's doing in python.
+As he's spent over a year coding a very simple project, I sure hope someone
+finds it useful. I do not. Neither does anyone I know doing seo related work.
+The overall impression everyone has is that it's a toy app and represents only
+his way doing seo. It's not a reliable nor flexible solution to gathering
+seo data for analysis, and a very simplistic first attempt -- involving
+almost no upfront design, rather it's best described as "winging it cowboy style".
+</pre>
+
+<pre>
+It seems that Gokogiri is the best way to use xpath to scrape
+info from a web page, such as YouTube video pages to get subscribers, etc.
+It depends on libxml2-dev -- the same as python's lxml and ruby's nokogiri.
+
+I don't like having a dependency like libxml2 whether it's for Go, python, or ruby.
+The only other choice is to manually parse/search the html soup that some
+web pages have become.
+
+UPDATE: gokogiri is no longer required as Go's built-in "encoding/xml" will work.
+</pre>
+
+<pre>
+Do This Maybe:
+
+I'm seeing a trend in this journal. The writing is divided into two categories:
+computer stuff and health. Perhaps I should reorganize everything and add
+two new menu items for computers and health, with computers being the default
+home page.
+</pre>
+
+<pre>
+Melt 'In Maybe:
+
+Yet another hot/humid day, so I'm taking it easy and saving some energy for
+tomorrow's big dig, well, pushing 12 tons gravel of around -- ok, the tractor
+will do most of the work.
+
+So my usual 10,000+ steps (about 5 miles) today will be at a leisurely pace.
+Try to enjoy the stroll along the river and through the ghost-like town with
+almost no traffic (at least on the weekend).
+Let my thoughts go where they may, like a walking meditation.
+
+I've come to really enjoy some of the ASMR videos on YouTube, and there's a
+larger following than I imagined -- <a href="https://www.youtube.com/channel/UC6gLlIAnzg7eJ8VuXDCZ_vg" target="_blank">these</a> are good.
+I wonder if someone doing asmr videos that isn't so cute would have the same effect, as
+it seems like everyone doing these are over-the-top cute. That's not intended as a judgement
+but just an observation ... we are human after all and attracted to all sorts of shiny things.
+
+The <a href="https://www.youtube.com/watch?v=MeOK1UzGHYw" target="_blank">building services in Go</a> video was interesing, and there's <a href="https://github.com/zorkian/lca2015" target="_blank">source code</a>.
+</pre>
+
+<pre>
+Long Days Maybe:
+
+Nine days of vacation time has just started, sweet.
+
+Unfortunately it's hot/humid, but I plan on putting new gravel on my driveway and
+on either side of the house. Monday I'm renting a front loader and backhoe tractor
+thingy ... good thing I have some experience using such a tractor from last year.
+
+Also, I am really eager to get coding on Senops with various implementations:
+- a single concurrent app ... all-in-one (good for Windows)
+- one client and 3 micro services
+- services based on Restful HTTP
+- services based on Go's RPC
+- maybe others?
+
+Weight lost is happening too fast, so I might stop the "mini-fast with caffeine" idea
+for a while ... I don't want to enter starvation mode, which would do more harm than good.
+</pre>
+
+<pre>
+I really like how the Golang community has embraced the idea of creating/offering
+small highly focused libraries on github. In other words, they embrace the
+concept of 'single responsibility' in software. Instead of trying to do/offer
+every feature/capability, like Rails for example, one can pick and choose the
+library that best fits their needs. This also makes it easier to peruse the
+library's code to understand its intent and verify that it's not malware.
+
+Say you want to convert a Rails app that is used as a restful JSON API service.
+You have the following options:
+- Go's stdlib package <a href="http://golang.org/pkg/net/http/" target="_blank">net/http</a>
+- use <a href="http://www.gorillatoolkit.org/pkg/mux" target="_blank">Gorilla mux</a> to enhance Go's HTTP request multiplexer(mux) ServeMux with URL patterns,
+  or use <a href="https://github.com/julienschmidt/httprouter" target="_blank">httprouter</a>, and so on
+- martini or gin or negroni
+- and many more small pieces/parts that can be easily assembled into a working service,
+  or just code your own completely from scratch -- that's flexibility
+... instead of the one size fits all rails approach.
+</pre>
+
+<pre>
+Starve Me Maybe:
+
+The "mini-fast with caffeine" idea continues to work -- lost 2 pounds this week.
+Plus the caffeine(coffee) reminds me of the old commuter work days in NY/DC, and
+I seem more productive in the mornings recently. Yeah, we're all caffeine addicts.
+
+I'm taking next week off from work to do some "family chores" and hopefully some
+hiking/camping. Also, I plan on coding/refactoring some personal projects, such as
+Senops (renamed from SeoTec) -- kind of sounds like "synapse" but for SEO stuff.
+
+Added a new <a href="https://github.com/cleesmith/golang_learning" target="_blank">repo</a> to capture my Go learning.
+</pre>
+
+<pre>
+Spin Me Maybe:
+
+This online journal is just excerpts from a hand written journal. I have shelves and
+boxes of these journals going back to the 1970's. In a manner of speaking, it's all
+a bit of an autobiography. That's not to say that any of this babbling is well written,
+or important or profound. Also, I keep a private journal using <a href="http://simplenote.com/" target="_blank">Simplenote</a>, a great little
+free app for having access to notes from anywhere, whether they are kept private (like mine)
+or published for public use. However, I still see fancy pen/paper journals as art --
+for example, this <a href="http://www.amazon.com/gp/product/1441315284?psc=1&redirect=true&ref_=oh_aui_search_detailpage" target="_blank">printer</a> is great ... I have filled all that they sell.
+Maybe, ruining the art with words, maybe.
+I try not to focus on date/time rather I think the "what" is more important than the "when".
+
+Besides does time really matter or even really exist?
+
+It seems a bit silly to base our lives on spinning around the sun, which itself is spinning
+around something, and that is probably spinning around something else -- too much spinning.
+</pre>
+
+<pre>
+Nothing Something Maybe:
+
+Using the "mini-fast with caffeine" idea over the past two weeks has burned off 3 pounds of
+fat, so it works. But is it healthy? Well, less weight and fat are healthy, right? It seems
+the answer to anything/everything is maybe. Especially if you are getting old, like me.
+Stuff starts to wear out and break due to years of youthful abuse -- you know, those
+invincible years where one could run a marathon, have three girlfriends, eat a whole pizza,
+and drink a keg of beer. Beware the patterns you form in life. This is easier said than done.
+If only we could get a "do over", but, alas, there's no chance of that happening even if I went
+to Tibet and sat on a mountain to gain enlightenment. Even the enlightened ones die.
+Perhaps the best we can do is to enjoy the moment, try to feel better, don't obsess
+about anything, forgive yourself/others, be grateful for life (such as it may be), and be
+intensely focused/interested in everything around you.
+
+Nothing is something and not as mundane as it may seem at first glance.
+
+There are new things everyday, but did you notice them -- stay alert. That is to
+say, be interested, but don't go around in your own ecstatic dream world as reality
+is interesting enough already.
+</pre>
+
+<pre>
+Fan Boy Maybe:
+
+I finally found a useful, as well as stellar, example of a project written in Go called <a href="http://0value.com/throttled--guardian-of-the-web-server" target="_blank">throttled</a>.
+
+The speed at which Go compiles, even a large project, along with it's tools/options --
+such as gofmt, checking for race conditions, etc. -- make the development process as interactive
+as using Ruby/Python. Also, there seems to be a growing number of younger programmers
+who feel confined by OOP (in the traditional way), and they are attracted to Go
+as they were initially to Python for that same reason. While that's interesting, it
+also means that one encounters a lot of unpolished and poorly tested projects.
+Gotta start somewhere I guess. Also, there seem to be more women programming in
+Go than the other languages, well, it seems that way and I wonder why. New insights
+and approaches to computers/programming can only be a good thing.
+
+While I may sound like a Go-fan-boy, I am still on the fence regarding Go until I code a few projects.
+But Go's built-in web server stuff is amazing and extremely fast when tested using
+boom, ab, wrk, and siege. It's pretty obvious that Go is a great choice for API/micro services.
+
+I think a good project to recode in Go would be <a href="https://github.com/cleesmith/uni2espy" target="_blank">Uni2Espy</a>, where speed and concurrency
+would be of great benefit when indexing vast amounts of server logs into Elasticsearch.
+There's even a version of <a href="https://github.com/jasonish/go-unified2" target="_blank">IDSTools</a> written in Go.
+</pre>
+
+<pre>
+Go Sleep Maybe:
+
+Please stop the demos/tutorials with the calls to time.Sleep() ... enough already.
+Does it really take that much more effort to write a semi-real example ?
+
+Re-coding a project in Go, from say Python, does mean you end up with more lines of code,
+but most of those lines are closing braces ... one can live with that.
+
+Remember that programmer time is much more valuable than processor time.
+
+Experimenting with <a href="http://embd.kidoman.io/" target="_blank">EMBD</a> today ... cool so far.
+</pre>
+
+<pre>
+Out Dated Maybe:
+
+Cross compiling Go programs on a Mac:
+1. assuming Go was installed via Homebrew:
+   cd /usr/local/Cellar/go/1.4.2/libexec/src/
+   - note: it's really the same process no matter how Go was installed, so try:
+      sudo find / -name "make.bash"
+      -or-
+      which go
+      -or-
+      go env (notice GOROOT to see where Go's tools/stuff are located)
+      ... to locate Go's src folder in order to execute ./make.bash
+
+2. rebuild Go's libraries/runtime for target, in this case, the Raspberry Pi:
+   GOOS=linux GOARCH=arm ./make.bash --no-clean
+   - this took less than 10 seconds
+
+3. now, compile some Go program as a self-contained binary for linux/arm:
+   GOOS=linux GOARCH=arm go build hello.go
+
+4. use the "file" command to verify the target for the binary file:
+   file hello
+    "hello: ELF 32-bit LSB executable, ARM, version 1 (SYSV), statically linked, not stripped"
+
+5. copy the binary file to the target and then run it
+   - no long drawn out installation process with oodles of dependencies to resolve
+     ... we're looking right at you Ruby/Python
+
+How cool was that?
+
+Also, note that the exact same binary file will run on a Beagle Bone Black -- unchanged,
+well, unless you're doing some specific hardware stuff (enough with the LED blinking already).
+
+Available platforms (there may be more than this, but I'm using these):
+  darwin/386
+  darwin/amd64
+  freebsd/386
+  freebsd/amd64
+  linux/386
+  linux/amd64
+  linux/arm
+  windows/386
+  windows/amd64
+- see: <a href="https://golang.org/doc/install" target="_blank">Go's Getting Started</a>
+Note: if desired, it's also possible to build for all platforms at the same time.
+</pre>
+
+<pre>
+Drown Me Maybe:
+
+1970's - Fortran and Cobol ... this is where I began with punch cards and teletypes
+1980's - C and Pascal (the language in my college courses)
+1990's - C++ and dare I mention Basic
+2000's - Java and C#
+2010's - Ruby (manna) and Python (lesser manna, but some manna due to all of those scientific/math packages)
+2015 + - Go (mostly concurrency manna)
+... this will continue until machines can program themselves, and hopefully
+    they will do what we ask and not what they want to do
+
+"Being a Python programmer, I had seen the light.
+ All other languages were for some reason inferior, and as a Python programmer,
+ I was the member of an elite cabal of superhuman ultranerds, smarter than
+ those childish Rails/JavaScript/PHP/whatever developers that couldn’t write
+ a bubble sort or comprehend even basic algorithmic complexity, but more in
+ touch with reality than the grey-bearded wizards of Lisp/Haskell/whatever that
+ sat in their caves/towers/whatever solving contrived, nonexistent problems for
+ people that don’t exist, or those insane Erlang programmers who are content
+ writing sumerian cuneiform all day long.  Of course, I knew everything, so
+ I’d just do concurrency in Python, because obviously that’s a good idea, right?"
+ - quoted from: <a href="http://jordanorelli.com/post/31533769172/why-i-went-from-python-to-go-and-not-nodejs" target="_blank">Why I went from Python to Go (and not node.js)</a>
+
+Wrong!
+Coding for concurrency in Python is like fixing a leak in a boat by diving into the
+water, holding your breath, and patching it somehow, all while the boat is speeding
+along and slowly sinking. Good luck with that!
+Even if you do manage to get it to work, guess what, it still only uses 1 CPU core
+because of that evilicious global interpreter lock.
+Oh yeah, don't even bother trying concurrency in Ruby, as its pretty much the same state of affairs as Python.
+In fairness, neither Ruby or Python are meant for concurrency ... it's an after thought
+and that is abundantly apparent.
+
+Also, see: <a href="https://lincolnloop.com/blog/concurrency-python-vs-go/" target="_blank">Concurrency in Python vs GO</a>, which is based on this <a href="https://www.youtube.com/watch?v=MCs5OvhV9S4" target="_blank">PyCon 2015 video</a>.
+The interesting part was how simple it was to change the Go version from
+synchronous to concurrent by just prefixing the function call with "go ...".
+Of course, not all programs will be that simple, then again, coding channels for
+communicating with goroutines is built-in and easy. It's also interesting how
+the Go code is still readable and clear as to its intention, sure, it's no Ruby
+but it's still readable/clear especially if you have C/C++ in your background.
+
+Also, see: <a href="https://gist.github.com/nf/3062783" target="_blank">node.js versus go</a>
+</pre>
+
+<pre>
+Hire It Maybe:
+
+I can't tell if the "mini-fast with caffeine" idea works yet, but it sure makes me jittery.
+
+Only newbies use the generators provided by Ruby on Rails. It's something you stop using after
+"day one" ... as the code generated provides too much cruft/convention which you end up
+changing/deleting. Everyone knows this that has spent even a few hours with Rails. But the
+inexperinced see generators as a Rails feature while completely missing the point.
+For me, and most developers, the best things about using Rails are:
+- a big salary+benefits for very little effort ... save/use "my time" for the challenging and intersting stuff
+- using Ruby for something other than cli and socket programming
+- being able to quickly prototype an app, even if it's mostly CRUD, along with simple UI/UX via jQuery/Bootstrap
+  - then after flushing out the features, doing user demos, etc. ... lather, rinse, repeat ...
+    deciding if Java is a better choice depending on scale, and now maybe even Go for api services
+
+This is just the reality of 2015.
+
+Anyone expressing an opinion otherwise about Rails simply lacks experience developing web apps
+and they should be ignored ... obviously.
+
+Also, anyone stating as an absolute that Python is the only language to choose has definitely
+gone over to the dark side. Programming languages are a bit like having brand names on hammers.
+Is a Stanley really better than a Tekton ? No! It's a damn hammer, so just find yourself
+a nail. An absolute opinion about Python, or any programming language, only demonstrates
+a limited capacity for thought and learning ... a stagnant brain. Anyone ignoring that
+almost every app requires concurrency is not paying attention and wrong headed.
+
+Also, Java/JVM are just in another league, and comparing Java to Ruby/Python/Go is unfair.
+Alas, Java is boring as it's not bling anymore, but we still use it "as it just works".
+
+Further, if a job candidate's github account does not have projects written in multiple
+languages (of some complexity), we do not hire them. Language bigots need not apply.
+</pre>
+
+<pre>
+Control It Maybe:
+
+Today I'm going to try the "mini-fast with exercise" idea. To be honest, this was probably how I
+operated daily back when I worked and walked/commuted in NY and DC for over 20 years. The idea is
+based on the fact that most everyone mini-fast's as they sleep during the night, unless you
+wake up and raid the fridge. So you don't eat breakfast right way, instead you drink some
+coffee or other caffeine laden beverage and then exercise (like a 2 mile brisk walk). Supposedly
+the caffeine enhances the fat burning that your body is already prepared for and doing during
+the mini-fast while you slept. Yes, even skinny people have fat and women more so than men.
+
+FACT: the only way to lose or maintain weight is to eat less calories -- end of story.
+
+Fancy fad diets don't work, just eat better food, avoid all starches, and eat less.
+If you have to count calories, do it, after all what doesn't have a nutrition label on it.
+Buy smaller plates, bowls, glasses, cups. Drink water like you live in the desert.
+Use every trick you can think of, but not because you will live longer rather you will
+feel better -- after all a meteor could fall on you or more likely some space debris or if
+you live in the boondocks (like me) a stray bullet from a red neck in a drunken stupor.
+Longevity is overrated -- do I really want to be so old that I'm totally useless, not me -- but
+I really do want each and every minute to be worth living, enjoying, and feeling better
+or as good as possible.
+
+Also, exercise doesn't help that much unless you run a marathon every day, even then you could eat
+a pizza plus soda plus ice cream and completely replace/exceed the calories lost during exercise.
+Exercise is mostly about feeling better, but there are some beneficial effects for your body as well
+as your mind -- so clear your mind by going for walk whether it's a scenic trail or just
+a stroll around town breathing in those fossil fumes (downsides, what can you do?).
+
+Just get over it -- and take back control over how you live your life. Simple, eh?
+</pre>
+
+<pre>
+Just created the <a href="https://github.com/cleesmith/seotec" target="_blank">SeoTec</a> github repo.
+Maybe Cellinetics or SeoHat is a better name ... wait, maybe cellinetics is too much like dianetics (not good).
+Regardless of the name, this green light's the progress I've made on using Go for api/microservices,
+and probably over the weekend I will commit some code.
+
+I'm also taking github's editor <a href="https://atom.io/" target="_blank">Atom</a> for a spin, just for some variety.
+I doubt I would ever regularly use something written in Javascript/Coffeescript, well, except for web sites.
+</pre>
+
+<pre>
+Will Power Maybe:
+
+Did another 11,000+ steps walk (about 5 miles) early today, as it might rain soon.
+Then I made a wonderful artichoke dip with parm cheese and olive oil with celery for dipping.
+
+Whole foods are so much better than the preprocessed foods in the other hundred aisles at the supermarket.
+Veggies and fruits seem to be an after thought as they only occupy a tiny space -- I guess
+perishable means lower profits.
+Yes, it's not just McDonalds et al that should be put out of business but supermarkets as
+well -- I wonder what it would take for them to change their ways. It does not look like
+consumer willpower is working. If it's available, people will eat it. Here's a thought:
+what if when you pulled up to a fast food drive thru it could instantly determine your
+state of health, and adjust the menu accordingly -- say your fat/lazy -- so the menu
+offered instantly changes to water and various salads with zero calorie dressing and
+no croutons -- and they will not sell you soda or a burger. Or maybe they charge for the
+food based on your weight and not the cost/weight of the food you ordered -- health care
+costs are factored in and no willpower is required.
+Even better do not allow cars to drive thru, you must park and walk thru a long
+curvy tunnel -- i.e. work a little for your meal. Maybe have projections on
+the tunnel walls of "you" as you are now and how you could be if you ate/exercised properly.
+Maybe project a pic of you crammed into a coffin -- that should dull your appetite.
+</pre>
+
+<pre>
+A good/interesting weekend project for learning Go would be to code some microservice-like programs:
+1. given a set of 1 or more urls gather the social media counts, concurrently of course
+2. given a set of 1 or more YouTube video ids gather views/likes/dislikes (scraped from html)
+3. given a set of 1 or more urls scrape some useful seo info (title, description, etc.)
+4. return the results as json
+
+Initially do these on Heroku, so they can worry about security, throttling, etc.
+Maybe also try deploying to DO since I have several domains and servers already setup.
+
+This would give me some practice with and insight into using Go for:
+- api services via it's built-in web server ... muxing/handling GET/POST requests
+- writing a custom logger to be used to decorate http request handlers
+- doing various things via Go's concurrency
+- toml instead of yaml
+- deployment ... well, that's kind of a no brainer with Heroku
+- reliability, speed, and performance
+
+From playing with Go I can already see that it will be great fit for api's and microservices.
+I don't really see it totally replacing existing web frameworks like Rails, NodeJS, Flask,
+Django, or even PHP. But a lot of what is currently being crammed into those bloated apps
+can be abstracted away by using Go to provide various services. Although, it is still very
+appealing to have a single easily deployed binary file that can do it all while being so
+very light on resources (memory, disk, and speed). Of course, there are many other language
+choices that can provide the same result.
+
+I am surprised by how many Go examples are available on github and youtube.
+Last night, I starting watching a Russian programmer creating a
+series of tutorials where he recreates a facebook/twitter-like web app. It's interesting how
+he is only using what comes out-of-box with Go and no external libraries, and how far
+that can take an app ... impressive. This is all interesting but to pay the bills I am
+perfectly happy coding in Ruby and web-apping in Rails. It's so easy. Why stress yourself
+over making money when you don't have to, I mean assuming you are a programmer, just let
+the joy and security wash over you. For me, Go and the other languages I'm exploring are
+just ways to widen my thought horizon ... sort of like reading poetry/philosophy or observing art/nature.
+</pre>
+
+<pre>
+To clear my mind and refresh my body, I'm off to walk along the river. With little
+rain recently one can see clear to the bottom. These mountains are a cool place to live.
+It's a bit like being on vacation every day.
+</pre>
+
+<pre>
+The bad news is that creepy/pippy stalker dude continues to read this -- well, it is public.
+I guess he has nothing better to do and oddly seems drawn to me. Why? ... dear God make "it" stop.
+The creepy part is the he responds to every thing I write here.
+Just as a slug continues plodding along, so does his year long project -- leaving a
+slimey trail of poor code behind it. Briefly I found the project interesting, but there's nothing
+of value nor any originality. He only uses any comment I make to somewhat (and barely that is)
+better his coding. Perhaps "unboxing" things was his true calling in life.
+It's as if some weird thing blew by in the wind, caught my eye, but is now gone.
+</pre>
+
+<pre>
+Wednesday, August 5, 2015 (Gregorian calendar) 3:00 AM Eastern Daylight Savings time
+... somewhere in the Blue Ridge mountains of the state of Virginia in the United States of America
+... bears: affirmative, red necks: affirmative, loud off-road vehicles: affirmative,
+    latitude: unknown, longitude: unknown, earth's position relative to the sun: unknown
+
+I was awakened by a dream.
+
+It seems I quit my day job and started writing a non-fiction book.
+I can't remember what the book was about, exactly, but it was decidedly not fiction.
+My suspicion is that this dream is related to my feelings regarding the state of
+affairs of computer science, technology, and life in general.
+It seems to me that everything is stagnant.
+This is made worse by some of the past becoming "new" again.
+Such as wanna-be-hobbyist programmers or hardware similar to the Raspberry Pi.
+It's all a bit disturbing.
+By disturbing I mean it's 2015 and no one has a jet pack, or a flying car,
+or fuel other than fossil, or a machine you can talk to like HAL (and that was 2001).
+Hopefully a 2015+ HAL will understand phrases like "HAL, open the damn door!".
+
+We need a revolution or an evolution or something and soon.
+
+Back to the dream, for some reason I was drawn to Japan, or maybe it was Hong Kong, or
+some place in Asia. That was my home base for writing, why?, I don't know, yet.
+I do remember that I was investigating some research a friend of mine and others were doing.
+In general, it was an attempt to create an organic/biological/whatever brain-like-thing, but on
+a massive scale. Larger than the island of Quam, which I visited when I was in the Air Force.
+Quam is about 10 miles long by 5+ miles wide descending to the ocean floor.
+A part of the project was to create a new remote island in the Pacific ocean the size of Quam.
+Well, not an island, exactly, but a damn big brain. I vaguely recall that salt water was
+a key component, as well the earth's magnetic field. Otherwise she was tight lipped
+with the details or the ultimate purpose of the project. My gut tells me it was a
+new form of life, and I had misgivings about it. Maybe the earth itself is awakened.
+Some believe that inanimate objects are not "dead", exactly. Who knows, but I do
+recall a kind of aurora borealis out over the ocean.
+
+Was this a vision or a just a very vivid dream?
+
+I'm hoping it's one of those dreams that I can "resume" sometime, with or without the details.
+
+What you have just read is all true. Truth is powerful. If the moon can tug on
+your bowels just imagine what the truth is capable of doing. So for your protection
+please apply lots of heavy duty aluminum foil around your cranium, or your cell phone if lacking
+a cranium, otherwise you may be influenced by what you have just read.
+While wearing your foil hat, don't forget to ensure you are well grounded by holding a
+copper rod that's jammed into the earth, or even better bury yourself up to your waist
+or deeper, then await further instructions on this frequency. Under no circumstances
+should you attempt direct cranium-to-cranium communication. If either of your parents are
+Neanderthal's please disregard this warning, as you are safe due to your extra cranium thickness.
+By the way, congrats on learning to read, and, hey, football season is coming soon.
+Evolution is a tough nut, huh?
+For the rest of us Homo sapiens sapiens, forewarned is forearmed.
+
+This message was sent and received in the following context:
+Wednesday, August 5, 2015 (Gregorian calendar) 3:00 AM Eastern Daylight Savings time
+... somewhere in the Blue Ridge mountains of the state of Virginia in the United States of America
+... bears: affirmative, red necks: affirmative, loud off-road vehicles: affirmative,
+    latitude: unknown, longitude: unknown, earth's position relative to the sun: unknown
+</pre>
+
+<pre>
+It's funny how some folk actually think they are original. They don't even bother
+to look around before patting themselves on the back and exclaiming "how awesome I am".
+This is unforgivable nowadays given that it only takes a few seconds to do a search
+of the inter-webs.
+It's not original or awesome or noteworthy to:
+- use http get/post to retrieve a value via some api
+- scrape the html for a given web page via css/xpath
+- use yield in python or streaming in a jinja template
+- coding it sequentially and monolithically, perhaps their real goal is
+  to make the code unapproachable and make themselves a necessary and
+  overly important part of the project ... i.e. the "it's all about me" syndrome
+All of that is actually more akin to following a recipe to bake a cake, while
+delicious, it's not very original/awesome, given how anyone can go to a
+supermarket and buy the ingredients and follow a recipe ... and have their
+own cake and eat it too.
+
+It's also funny how some, so called programmers, automatically gravitate to creating
+a web app. Unable to see that what they are really trying to create is best done
+as a command line program. The whole approach is wrong headed and based only on
+"look at me", and not about being altruistic in the sense of creating a program
+that is useful to those doing a particular task (say SEO).
+
+For example, say you're writing a program to gather data to be used to assist a
+client with SEO issues:
+Why would such a program need to be a web app ?
+Why would it require Google for persistence ?
+
+Why not be flexible and allow multiple outputs such as a csv/xls file when everyone
+knows most businesses rely on Excel ... whether Excel is good or bad is irrelevant,
+it's just a fact that everyone uses it.
+
+The input could be as simple as a haml file of url's and some directives.
+
+Coding the program to be concurrent would allow it perform the data gathering in parallel(assuming 1+ cores),
+so the user isn't waiting and wasting their time. After all, they most likely will repeat the process
+over and over (wash, rinse, repeat) during their analysis.
+
+It would be much simpler to use a command line program together with cron to repeat a task,
+such as gathering data for trending.
+
+As obvious as all of this is, they have overlooked the very thing that has made all
+*nix's a success ... small "single purposed" command line programs whose input/output
+can be chained together to accomplish cool stuff and get work done. Focusing on the
+grandiose means you've missed the simple but powerful that's right in front of your face.
+How can anyone who uses *nix tools like git and vim on a daily basis miss the mark so badly?
+A simpler design would open a vast horizon of possibilities for such a program,
+whereas shoehorning it into a web app with a huge Google dependency only
+ensures it's limited and will ultimately be a failure. Simply put it's wrong headed. This is
+largely due to over reaching for the grandiose ("me, me, me") while exclaiming no one
+understands "me" because I'm so original and futuristic.
+It's all just another bottle of snake oil, and poorly done snake oil at that
+... oh look, if you peel off the label on the bottle there's another one underneath that says poison.
+
+It's also interesting to observe that some folk can't think/work without some
+resistance or opposition to rant/rave against. As if they are good/righteous and require
+others who are bad/evil to inspire and motivate them. This is indicative of a flawed intellect,
+and a lack of discipline to focus and think for themselves.
+</pre>
+
+<pre>
+Just finished reading "The Philosopher's Stone" by Colin Wilson. It was a quick read
+because of it's pace. A strange sort of science fiction, so I think I will read more
+by this author, and maybe check out some of the Lovecraft references.
+</pre>
+
+<blockquote>
+Python is convenient, and in many ways, a great advance over the C programming language.
+However, just as teaching teenagers to drive automatic transmission is a practical
+guarantee that they’ll never learn stick, advising neophytes to learn Python is creating
+programmers who will never bother to learn how to code in C.
+
+And that, I believe, is a bad thing ...
+Programmers who only know Python lack a proper mental model of how computers work.
+</blockquote>
+
+<pre>
+I agree with the above quote totally, and I would even throw in that just as
+a teenager should learn how to raise the hood and change the oil, learning to
+code should involve some exposure to assembly/machine code. Not to mention that
+for smart people Python is easy to learn and therefore it's rote/boring and lacks
+the ability to instill a curiosity about how computers work.
+Don't we need smart people writing code/apps ?
+Aren't the best people always motivated by a thirst for knowledge ?
+If you are just learning to program computers start with C ... no if's/and's/but's.
+Every job interview should throw some C code at a potential employee then
+listen to what they have to say about it. If there's a blank look on their
+face we don't hire them. We are looking for someone who gets that certain
+joy from mastering a machine, which is a distinctly human pleasure.
+</pre>
+
+<pre>
+Oh look there's a MIT graduate-level DS course with a focus on fault tolerance,
+replication, and consistency, all taught via lab assignments in GoLang!
+Just do: git clone git://g.csail.mit.edu/6.824-golabs-2014
+
+Here's a simple example that could be used to fetch counts from various social api's
+(like tweets, facebook likes, google +'s, etc.) almost simultaneously (you know, fast):
+<a href="https://gist.github.com/cleesmith/303fa4c5a07fa81eb22d" target="_blank">Gist</a> of the code.
+
+... similar code could be used to scrape a web page and all of that being done
+asynchronously. If one needed to keep the user informed as to what is
+happening, Go has channels built in which are perfect for sending/receiving
+messages from async routines while they are working (or even for errors/timeouts).
+You can kind of do this in Ruby/Python but it's not as fast or as lightweight,
+because goroutines are not threads(heavy) nor processes(very heavy). Also,
+why should a user in 2015 wait 5+ seconds for all this to complete when they
+can usually wait less than a second ... come on it's 2015. Typically I see
+the "with_goroutine" finish in 0.17 seconds compared to the 1.34 seconds doing
+the get's sequentially.
+
+Things to note:
+- one can read Go code from top to bottom and understand it's intent
+- Go is so simple, about 25 keywords, you can learn it in a single video:
+  https://www.youtube.com/watch?v=CF9S4QZuV30
+  or take the tour at http://tour.golang.org/list
+  So if you're not really a coder/programmer, or you code infrequently, then
+  this is good news as you don't have to spend a lot of time relearning or
+  struggling to remember syntax/concepts just to scratch some itch.
+- the advantages of a single, self-contained binary are real, and compilation is fast
+  ... and coming from a C/C++ background, the compilation speed is a big deal
+- build once for all platforms, then give a friend a binary file to run and
+  they can scratch the same itch as you
+- it offers the 3 simple things almost every program needs:
+  - input
+  - output
+  - concurrency ... without the usual gotcha's and complication, heck even
+                    javascript can do this
+- don't like the DRY doctrine then Go is for you, which makes the code verbose but still readable
+- sure, it ain't perfect, but while we wait for a future without programming
+  it's just another tool in the toolbox and a means to an end
+  ... granted, you can still use Python/Ruby but everyone reaches a point where both
+      of those choices become a bit of a nightmare as they are slow and difficult to maintain:
+      - for Ruby it's the whole install and gems issue
+      - for Python it's the same as Ruby but with an extra bother of version 2 vs 3 (kind of a bad community smell there)
+  ... and don't even mention Java and J2EE-land
+- Go will never, nor was it intended to, replace C/C++ but it can replace Ruby, Python, Java, and the like
+- Go is a perfect fit for open source projects:
+  - if on github the only way your project grows is via contributors (most of whom are unknown and so are their skills), so
+    and so Go levels the playing field as there are no language secrets/tricks to deal
+    with when reviewing a pull request ... i.e. no one can be a smarty pants
+  - tools like gofmt, golint, go vet standardize the code making reviewing less tedious
+  - no need for a project owner to be a rockstar or have an ego the size of Montana
+    ... you can just be a good person doing altruistic work
+  - so despite the languages shortcomings, criticism, and trendiness it will probably
+    continue to grow because of it's open source fitness
+</pre>
+
+<pre>
+Thoughts:
+- is open source really revolutionary if the hardware is closed/controlled, looking at you Intel/IBM/who_knows
+- UEFI is a joke on us so hardware vendors(read that as Microsoft) can continue to collect royalties
+- should we really still be using PC hardware ... doesn't seem to match what servers do
+- the dominant OS's today are GNU/Linux (servers and mobile devices) and
+  Microsoft Windows (all the legacy systems that aren’t mainframes)
+  ... and neither has any features that help manage large-scale deployments
+- is anyone(s) really capable of stepping up and improving the state of OS's
+- are there any app developers who actually understand how computers work and is that the
+  reason they don't know anything about how to use tooling to debug, observe, and improve their code
+- things are broken, but can they be fixed ? ... alas, hope rarely meets reality
+  ... this a time best described as "going through the motions"
+
+Disclaimer: I am not the only one to have these thoughts and I can't quote any sources, that I remember, which may have influenced me.
+
+Perhaps the only solution is to remove the hardware/software(as done by humans) from the
+process. Say no to silicon or whatever metal is used nowadays. Go biological. Mostly
+water, carbon, and so on ... just chemical. Just pretend it's not alive, or maybe
+that's the next evolutionary step. Instead of breeding or killing the current human
+species we create a shiny new replacement ... smarter and faster and thoughtful.
+Probably not as easy to do as it is to say.
+</pre>
+
+<pre>
+What better way to display ignorance than to write/blog about programming languages you
+have never used. If your github repo's don't have any projects written in Ruby or
+GoLang or Perl or whatever then can you really have an informed opinion that's
+based on experience? No. All you are doing is just regurgitating things you've read from
+blog/wikipedia articles. Very lame. We can all google and read for ourselves. With
+the name dropping of semi-famous geeks making it even worse.
+It boils down to an opinion based on only coding "toy apps" for personal use, which
+is fine, but don't be preachy about it. A lot of the computer science stuff only
+begins to make sense when you've worked on large apps and with other people. And
+those other people all have different skill levels, so common denominators must
+be found for an app to be useful/successful. By "common denominators" I mean
+best practices and known patterns both of which have already proven themselves
+over time. Facts are facts, so get off your little hobby horse and get a
+job as a programmer with a team of at least a dozen other people and then
+reassess your opinions. Not to mention the fact that if a "toy app", or niche gimmick as it were,
+should take at most a weekend yet drags on for over a year then your skills are
+obviously sorely lacking ... it's right there in black/white in the github repo.
+And even after a year it's still as buggy as sin and what can be called toxic to programming by example.
+Also, does anyone really want to use an app that has a dancing penis gif in it -- creepy.
+</pre>
+
+<pre>
+As odd as it is to say, having diabetes type-2 is kind of a blessing in disguise. WTF?
+By that I mean if you pay attention while trying to lessen the effects of diabetes, you
+can really get to know how "your" body works. For example, I use to run marathons and
+since that burns tons of calories you don't really pay attention to what you're eating.
+Say those pre-marathon dinners with huge amounts of pasta/spaghetti ... tasty but not
+really good for a body. When I stopped running due to a knee injury (not serious just
+too painful to run) and continued with the poor eating habits, guess what, you gain
+weight but worse you're whole body goes whacky. My idea of exercise was running until
+you wanted to puke. Manly, right, wrong! It turns out that lesser exercises, such as
+walking, really do have an effect on your body. Currently I'm walking from 6 to 8 miles
+per day, and cut myself a break on Sunday's with less walking which allows for some recovery.
+Who knew that using slow twitch muscles was exercise, after all we are designed to walk all day
+long if our feet/back didn't get sore so it didn't seem like exercise to me. But after doing
+this for only three months, my blood pressure is now within a normal range and my blood
+sugar (with medication) is getting close to normal ... I feel much better and stronger.
+I even learned a new programming called Go ... so my brain is working better too.
+I've learned a lot about calories, carbohydrates, fats, and supermarkets. As for supermarkets,
+most of the space is devoted to foods we should not eat. Like starches, which turn to sugar
+almost the moment you swallow them, with nothing good in them for anyone. Sure pasta and mashed
+potatoes are good, just not good for you, but hard to turn down during those holiday meals with family.
+So it's all about being disciplined or feeling lousy/weak. It's all been insightful and interesting.
+As always the hard part is making something the new habit over the long haul, and the horror
+stories are true which is motivation enough to avoid going blind or losing a leg or having
+no kidneys. Sure, as you get older things will break so diet/exercise ain't going to fix
+everything, but I think feeling better is a good thing so is a good nights sleep due in
+large part to the exercise. Feeling better isn't exactly happy. But what is happy? As many
+have said before, happy is something you decide to be and not something you can find or
+pursue (silly declaration of independence). So happy it is, and feeling better too.
+</pre>
+
+<pre>
+It's funny how many so-called programmers use stackoverflow to solve problems. This is
+one of the questions we use when hiring programmers. If they answer yes we don't hire
+them. Imagination and problem solving are important skills every programmer should
+have, and not googling for a solution. Sure, being lazy is a good thing for programmers,
+but not if it means copying/pasting from stackoverflow. All that means is you don't
+understand the language you're using well enough to reason about the problem you're
+trying to solve. Sure there may be times when one has to research the new or unknown,
+but any programmer worth their salt will not give in to the temptation to copy/paste code.
+
+It's funny how many so-called programmers don't really understand some of the computer
+science concepts that have evolved over many years. Not all of which come from lofty
+university thinkers, rather they are pragmatic. For example, ask someone to explain DRY
+and see that they don't really understand. Sometimes this is due to a lack of experience,
+i.e. they haven't spent years working on large projects with a team of people.
+
+Another bad sign, or code smell as they say, is any code in any language laced with comments.
+Comments are a distraction to understanding the code, because the "word is not the thing" ...
+just because a comment says so does not make it so. Comments are just another indication that
+the programmer is struggling to express code is a readable way.
+They are incapable of thinking clearly, but it's something everyone can learn to do if only
+they apply themselves.
+</pre>
+
+<pre>
+The good news is that creepy stalker dude is no longer following me. Perhaps getting
+hammered in the head broke something. When the rest of us get hammered we're just drunk.
+And to think all of that started because I said I was inspired to write some code
+based on his videos. Mostly the ones about the raspberry pi and the short stack. But
+his response was to make two more videos where he repeatedly used my "full" name in
+a bullying fashion. I had to ask YouTube to have him remove the videos. Months go by, and
+by, and then he starts to code (if you can call it that). I felt like I needed to comment
+and point out that his code was poorly written (even for python), slow, and unreliable. All
+of which were true, but in retrospect I should have just moved on down the trail to avoid
+the creepy stalker rants/raves that happened next. Live and learn. I've done the same
+thing on other open source projects and never encountered any creepiness. You just
+never know until you open the can, so to speak.
+</pre>
+
+<pre>
+Pied Piped Maybe:
+
+With my kids all grown up, off on their own, and an empty house in a beautiful mountain setting,
+I am finally able to enjoy myself. Not just with work related projects and research, but to
+dabble with various things: drawing/painting, photography, acting/theatre, flintknapping obsidian,
+collecting computers(newest is a MacPro server with 6 cores 64GB mem and a Raspberry Pi 2),
+a 360 video camera(it captures everything but itself), a civil war pistol(fun/dangerous),
+cat dancing(also fun/dangerous, don't ask), and yes even new programming languages.
+
+An aside: if COBOL/Forth are still available I'm sure Go will endure ... not to mention that COBOL
+is still actively used in mainframe environments. I updated a COBOL program for an old client
+during Christmas vacation last year ... remembering JCL was the hard part. The occassional $250/hour
+gig is nice, if you have those ancient skills ... not the least of which is editing anything by
+having to use a 3270 terminal emulator. That's a bit like Neo going to meet the Source of the
+matrix, but without the cool graphics and fight scenes(the only fight is editing, yawn).
+
+Any of my projects on github, public that is, are just curiosities ... if they are
+useful to someone in some way that's great, but if not that's great too.  I already derive
+a sense of fulfillment/joy from my "day job", so I'm not looking to start a movement or "pied pipe"
+anyone in any direction. Besides retirement is just a year away so my interests are growing
+past just earning an income. Don't care about github clone counts or any social metric ... to me,
+life is more than that meaningless nonsense. Whatever tickles my fancy is my only compass.
+Some call this the pursuit of happiness. For me, it can be as simple as a cup of tea and a book
+such as "The Mind Parasites" by Colin Wilson ... what a creepy writer, but in a good way.
+
+Since I mentioned the Raspberry Pi it seems also worth mentioning that I've had one in a plastic
+box outside in the elemments for two years now. It mostly captures pics of the neighbor's cats.
+I wrote the motion detection software in Python (soon to be in Go). It's amazing that something that
+cost about $80 in total has lasted that long and worked that reliably. The coolest pic was
+that of a small black bear investigating the porch ... she/he looked directly into the camera, as if posing.
+</pre>
+
+<pre>
+An interest was expressed today in <a href="https://github.com/cleesmith/rulespy" target="_blank">RulesPy</a> which manages rules for Snort/Suricata.
+This is good opportunity to rewrite it in Go since it's currently a Python/Flask web app and it could use the upgrades/enhancements.
+</pre>
+
+<pre>
+If I wanted to make Cellipede a web app there are many options available, for example:
+<a href="http://beego.me/docs/intro/" target="_blank">beego</a> if one wanted to continue in the cookie cutter rut that is Python/Flask or Ruby/Rails
+See <a href="https://github.com/avelino/awesome-go" target="_blank">awesome-go</a> for a curated list of Go frameworks, libraries and software.
+However, I just don't see gathering social metrics and page scraping as a web app, but more of a command line
+program that dumps the gathered data to a csv/xls file, google drive, or whatever.
+But there's definitely concurrency as counts and scraped data are from different sources
+and can be gathered in parallel ... this is so obvious as to be stupid not to do it that way,
+why waste 10 seconds when the whole thing can be done in 3 seconds (or whatever the longest took).
+
+Of course, for my day job I'm stuck with C++, Ruby/Rails, and some Python programs.
+I could switch the Python programs to Go, which I will do as my employer is cool with that.
+I could switch the C++ programs to Go, but there's really no compelling reason to do so ... as
+they are already statically linked, easy to install, and blazingly fast.
+However, because Ruby/Rails is so familiar and simple -- well, until you have to scale it -- I'm
+stuck with it for the foreseeable future. But hey the pay is great plus Ruby is a thing of
+beauty to read/write when the opportunity arises to get off the "rails". While python can
+be written in a OOP way like ruby, that does not seem to be the common approach. It's like
+python is the "Joe lunch pail" of programming languages, because those who can't think and
+reason about a problem look for a package/library of which there are many. But "many" does
+not equal worthy of being used. So that leaves a pythonista with just writing a tiny bit of
+"glue code" (similar to PHP), and spending the rest of their time wrestling with deployment.
+By deployment I mean trying to get easy_install, or pip, or C libraries to all match up and
+work as expected. It's that headache that led to containers (like Docker) and Chefs and Puppets - wtf?
+How about that, Docker is written in Go. Notice that at no time and in no way do I refer to
+Javascript, which unfortunately is just a necessary evil on the front end of all web apps ...
+so it will remain the "king of all programming languages" and the ultimate atlatl. So why
+not give in to the dark side that is javascript and use node.js? A good question. Well,
+fortunately, programming is like life with lots of diversity and choices. So do what you
+enjoy and get down off of your soap box. I will always love ruby (cha-ching$) and appreciate
+the knowledge that c/c++ has provided me, but now like all of the other languages tried
+before I will give Go more than a cursory glance ... because I can afford to, I enjoy coding,
+and it's a good thing to stretch one's mind (even if the underlying problems are still the same).
+I don't sit around all day googling/reading blog posts and then pretend I have an informed
+opinion based on "real" experience. Nor do I try every programming language that comes out the pipe.
+It's been a while, but I even wrote two languages myself. I sure hope no one discovers them
+or worse that someone is using them. One was like Pascal and the other was like Forth. I always
+liked Forth, how can you not like a language that can create programs that alter their machine code
+while it is executing ... cool and stupid at the same time ... for some reason that reminds
+me of core war in 1984 and my old Super Elf (those were the days, ah, the smell of solder ... or
+better said "hot molten lead").
+Here's a <a href="http://www.digibarn.com/collections/systems/quest-cosmac-super-elf/index.html" target="_blank">Super Elf</a> but mine was in a wood case ... what's that guy thinking? is it a computer without the wood? wtf?
+</pre>
+
+<pre>
+The concurrency offered by Go makes it a perfect choice for Cellipede:
+- as many of the tasks don't need to be done sequentially
+- all of the social metrics gathering can be done concurrently
+- instead of waiting 5-15 seconds for all of the api's or scrape's to respond, they
+  can be done concurrently which means the total time is equal to the longest task
+  and not all of them added together ... i.e. way faster
+
+Of course, the greatest advantage of using Go is compiling a single binary file for a target system.
+No more dependency hell ... just scp/rsync/whatever the file to the target and run it.
+
+And compiling for any/all target systems, including ARM (Raspberry Pi, etc.), is simple using
+the Go installed by Homebrew ... i.e. do everything on a Mac, just once, but deploy anywhere -- way cool.
+
+If all of us are putting all of our eggs in Google's basket, g+/gmail/calendar/docs/maps/etc, what
+better programming language choice than the one funded/used internally by Google ... Go_ogle it is.
+
+Of course, absolutely none of the above is new (see Hoare 1978) ... think C/C++ ... but Go is
+just a better and simpler packaging of what's been learned over the years.
+
+There's no one solution, well, until the day arrives when computers can solve problems all
+by themselves (without humans). Sure, it will happen, but by that time they will be
+called "focused thinkers"(FTs) or some such and the idea of "computing" will be long dead.
+Why the term "focused thinkers"(FTs)?  Because humans suck at focusing, we're easily distracted,
+whereas FTs' will have laser focus on the task at hand (so to speak).
+We will be partners, FTs and humans, and hopefully the FTs will not smash us the way we probably
+did the Neanderthals. Imagine two football teams made up of Neanderthals, e.g. the Unibrows vs Rockheads,
+on surround sound TV and all of the concussions/injuries ... I'm sure the Romans would have filled the
+coliseum with them.  My guess is that we used our atlatl's to kill them or bred them out ... brain power rules.
+Go is so simple even a Neanderthal can do it, or could if they were still around.
+Go is just another in a long list of atlatls, i.e. a tool we use to help us with stuff.
+What we really need is the next evolutionary step above tooling, such as a focused thinker and
+who knows what form that may take ... it does not have to be a machine. Perhaps we change or evolve
+into focused thinkers, and inevitably smash the current us, of course.
+
+This universe is a funny ole dog.
+
+... obliquely related joke:
+How is a Harley Davidson like an old dog?
+They both like to ride in the back of pickup trucks.
+
+What is the difference between a Harley Davidson and an old dog?
+The dog can get in the back of the pickup by itself.
+
+I don't own or know how to ride a motocycle or know anyone who does, so why does this joke stick in my head?
+Further evidence of how unfocused humans can be ... we've had our time in the sun and it's time to evolve, yet again.
+</pre>
+
+<pre>
+Go Lang Maybe:
+
+just discovered <a href="https://golang.org/" target="_blank">Go</a> (GoLang):
+- it's fast when compiling and the result is fast at execution time
+- it's cool, coz "go build" creates a statically linked program
+- a "statically linked program" is cool coz it can just be copied around without an install or dependencies ...
+  it just needs to be a binary file that's built for that operating system (linux, mac, windows)
+- a program can be compiled on a Mac for all operating systems ... i.e. cross compiling
+- installation of a program becomes just copying the binary file to the target system
+- a small <a href="http://beego.me/" target="_blank">Beego</a> (like flask/rails) web app is about 20MB binary file, that's small
+- there's no installing an interpreter (Python or Ruby), or packages/dependencies (pip or gems) ...
+  the only real dependency is the target system
+- the downside is that the Go language is not as eloquent as Ruby, but it's faster/smaller and without the
+  usual difficult and error prone installation process
+
+Python is great for beginners and playing around.
+
+Ruby is great for learning object oriented programming, teams, and cookie cutter web apps with Rails.
+
+Go is the way forward ... with:
+  - great docs
+  - everything that's provided by Ruby/Python but with a different syntax
+  - contains a fully functional web server, but can also be proxied via nginx (which is much faster for static assets)
+  - multi-core support baked in
+  - concurrency built-in
+  - high performance is in large part due to the static compilation of the statically-typed code (not quite as fast as C, but close)
+  - no install on target system due to static linking, just copy binary file to target then "./someprogram"
+</pre>
+
+<pre>
+an open source alternative to <a href="https://slack.com" target="_blank">Slack</a>:
+<a href="http://www.mattermost.org/" target="_blank">Mattermost</a> at <a href="https://github.com/mattermost/platform" target="_blank">github</a>
+- Mattermost is coded in Go (a better C?) and available as a Docker image
+- Slack is coded in PHP (yuck!), MySQL (yuck!), and uses SOLR (yuck!) for indexing/searching
+- Mattermost has fewer features than Slack
+- Mattermost can be hosted locally if security matters or if you don't want to pay a service fee
+- there are other Slack-like projects, but Mattermost is not just another pile of open source code as they are also building a community
+- Slack is better if you don't have enterprise/security concerns and don't mind paying for the service
+</pre>
+
+<pre>
+new software:
+<a href="https://github.com/cleesmith/cellipede_ruby" target="_blank">cellipede_ruby</a> which is a search engine optimization, SEO, command line tool for data gathering that creates Excel spreadsheets
+</pre>
+
+<pre>
+the beauty of Ruby and what few people understand ... simplified:
+- <b>1.class</b> means <b>1</b> is an <b>object</b> whose <b>class</b> is Fixnum
+- <b>Fixnum.instance_methods(false)</b> reveals this object to have these methods [:to_s, :+, :-, :==, etc], so
+- <b>1.to_s</b> is really 1.send(:to_s) and <b>1 + 1</b> is really 1.send(:+, 1)
+- yes, <b>send</b> is just passing a <b>message</b> to an <b>object</b>
+- of course, I don't need to know about <em>sending messages to objects</em> just to do <b>1 + 1</b>
+
+Ruby is an absolute beauty and why I say it's <b>manna from heaven</b>, ok, Japan actually.
+Of course, it may be more beautiful to have a language like Smalltalk with only 6 keywords and no conditionals ... true OO
+</pre>
+
+<pre>
+always apply these ideas from Sandi Metz:
+ <b>be Smalltalk infected</b>
+ <b>be Condition averse</b> ... when possible avoid if/else/case/unless ... keep the <em>happy path</em> visible and readable
+ <b>be Message centric</b>
+    - don't own the behavoir of an object
+    - null object pattern
+    - composition ... beware of always using inheritance, it's not for sharing behavoir
+    - independency injection for behavior
+ <b>be Abstraction seeking</b>
+* see: <a href="https://www.youtube.com/watch?v=OMPfEXIlTVE" target="_blank">Sandi Metz</a> and her <a href="http://www.amazon.com/Practical-Object-Oriented-Design-Ruby-Addison-Wesley-ebook/dp/B0096BYG7C/ref=tmm_kin_title_0?_encoding=UTF8&sr=8-1&qid=1434722417" target="_blank">book</a> is great too
+For the most part, my projects accomplish each of the <b>be</b>'s above.
+</pre>
+
+<pre>
+If you have a project that you consider to be <b>intellectual property</b> ... that's great, you're brilliant,
+but keep it to yourself, try a private repo, until you're ready to <b>gift your little wonder</b> to the world
+
+But open source is not <b>intellectual property</b>, and best explained by Remy Sharp:
+"<em>
+ Welcome. Welcome to this code I wrote.
+ Help yourself to bits you like or need.
+ Help make it better for others.
+ Help make it yours.
+ Help make me better with your suggestions, changes or discussion.
+ Use the code in any way you want, in ways I never thought of.
+ And if the projects I created lives on without me, then open source has worked.
+"</em>
+If you don't understand the above then you just don't understand github or open source software.
+</pre>
+
+<pre>
+learn Clojure and Elixir
+
+return to Smalltalk more often
+
+Rails, given the <b>monkey-patched mess</b> it's become, will be the ruin of Ruby
+... bummer, as I used Ruby before Rails came along, and, often, it will put a <b>smile on your face</b>
+
+Python ... well, why, if you have Ruby? ... well, ok, maybe for nltk, pandas, scipy, scikit-learn, matplotlib, and numpy.
+Sometimes you may want to <b>wax nostalgic</b> and relive the days of gigantic loops, with lots of sideways pyramid-style indented code,
+and if-else's the size of Montana (you know, big) ... just to remind yourself of how nice OO can be
+
+Java ... no way am I going back there ... although Elasticsearch is really impressive
+
+Emacs Lisp, maybe, I like Lisp, but I use vim most of the time
+
+regarding editors: on a daily basis I use vim, sublime, textmate, nano, and notepad
+... yes, there are computers all over the house, running all sorts of OS's, plus a bunch of cloud servers
+... and I type so blazingly fast in all of them that I don't need any macro's/whatever's for repeated actions/tasks/whatevers
+... just keep on truckin', as I'm <b>chicken chasin'</b> fast and no <b>Kentucky fried idiot</b>
+... oh yeah, stay humble, IMHO
+</pre>
+
+<pre>
+revive <a href="https://github.com/cleesmith/uni2espy" target="_blank">Uni2Espy</a>, which processes unified2 files from snort/suricata/whatever and indexes them into Elasticsearch
+</pre>
+
+</div>
+<hr style="color: gray; display: block;
+           margin-top: 0.5em;
+           margin-bottom: 0.5em;
+           margin-left: auto;
+           margin-right: auto;
+           border-style: solid;
+           border-width: 5px;" />
+<br><br>
+</body>
+</html>
