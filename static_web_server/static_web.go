@@ -39,7 +39,7 @@ func main() {
 	log.Printf("Timezone: %v %v", t, o)
 	Info = log.New(os.Stdout,
 		"",
-		log.Ldate|log.Ltime|log.LUTC|log.Lshortfile)
+		log.Ldate|log.Ltime|log.LUTC|log.Lmicroseconds|log.Llongfile)
 	// log.Ldate|log.Ltime|log.Lshortfile)
 	chttp.Handle("/", http.FileServer(http.Dir("./")))
 	http.HandleFunc("/", HomeHandler) // homepage
