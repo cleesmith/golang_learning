@@ -1,0 +1,189 @@
+<!doctype html>
+<head>
+<meta charset="utf-8">
+<title>Conserving File Descriptors in Go | Burke Libbey</title>
+<meta name="author" content="Burke Libbey">
+<meta name="viewport" content="width=600px, maximum-scale=1, user-scalable=yes" />
+
+<style>
+article,nav,footer,header,section{display:block}
+::-moz-selection{background:#fe57a1;color:#fff;text-shadow:none}
+::selection{background:#fe57a1;color:#fff;text-shadow:none}
+
+.highlight{font-size:1em;line-height:1.35em;font-weight:normal;margin:-15px -14px 10px -14px;border:1px solid #073642 !important;background-color:#001d25}
+
+.highlight .line-numbers{text-align:right;font-size:1em;line-height:1.35em;background:#073642 url('/images/noise.png?1366044396') top left !important;border-right:1px solid #00232c !important;-webkit-box-shadow:#083e4b -1px 0 inset;-moz-box-shadow:#083e4b -1px 0 inset;box-shadow:#083e4b -1px 0 inset;text-shadow:#021014 0 -1px;padding:.8em !important;margin:0;-webkit-border-radius:0;-moz-border-radius:0;-ms-border-radius:0;-o-border-radius:0;border-radius:0} .highlight .line-numbers span{color:#586e75 !important} .ie8 .highlight .line-numbers{font-size:1.01em} .highlight .c{color:#586e75 !important;font-style:italic !important} .highlight .cm{color:#586e75 !important;font-style:italic !important} .highlight .cp{color:#586e75 !important;font-style:italic !important} .highlight .c1{color:#586e75 !important;font-style:italic !important} .highlight .cs{color:#586e75 !important;font-weight:bold !important;font-style:italic !important} .highlight .err{color:#dc322f !important;background:none !important} .highlight .k{color:#cb4b16 !important} .highlight .o{color:#93a1a1 !important;font-weight:bold !important} .highlight .p{color:#93a1a1 !important} .highlight .ow{color:#2aa198 !important;font-weight:bold !important} .highlight .gd{color:#93a1a1 !important;background-color:#372c34 !important;display:inline-block} .highlight .gd .x{color:#93a1a1 !important;background-color:#4d2d33 !important;display:inline-block} .highlight .ge{color:#93a1a1 !important;font-style:italic !important} .highlight .gh{color:#586e75 !important} .highlight .gi{color:#93a1a1 !important;background-color:#1a412b !important;display:inline-block} .highlight .gi .x{color:#93a1a1 !important;background-color:#355720 !important;display:inline-block} .highlight .gs{color:#93a1a1 !important;font-weight:bold !important} .highlight .gu{color:#6c71c4 !important} .highlight .kc{color:#859900 !important;font-weight:bold !important} .highlight .kd{color:#268bd2 !important} .highlight .kp{color:#cb4b16 !important;font-weight:bold !important} .highlight .kr{color:#d33682 !important;font-weight:bold !important} .highlight .kt{color:#2aa198 !important} .highlight .n{color:#268bd2 !important} .highlight .na{color:#268bd2 !important} .highlight .nb{color:#859900 !important} .highlight .no{color:#b58900 !important} .highlight .ne{color:#268bd2 !important;font-weight:bold !important} .highlight .nf{color:#268bd2 !important;font-weight:bold !important} .highlight .nn{color:#b58900 !important} .highlight .nt{color:#268bd2 !important;font-weight:bold !important} .highlight .nx{color:#b58900 !important} .highlight .vg{color:#268bd2 !important} .highlight .vi{color:#268bd2 !important} .highlight .nv{color:#268bd2 !important} .highlight .mf{color:#2aa198 !important} .highlight .m{color:#2aa198 !important} .highlight .mh{color:#2aa198 !important} .highlight .mi{color:#2aa198 !important} .highlight .s{color:#2aa198 !important} .highlight .sd{color:#2aa198 !important} .highlight .s2{color:#2aa198 !important} .highlight .se{color:#dc322f !important} .highlight .si{color:#268bd2 !important} .highlight .sr{color:#2aa198 !important} .highlight .s1{color:#2aa198 !important} .highlight div .gd,.highlight div .gd .x,.highlight div .gi,.highlight div .gi .x{display:block}
+
+body{margin:0;font-size:13px;line-height:1.231;background-color:#002b36;font:16px 'Source Sans Pro'}
+#container{margin-top:70px;width:700px;margin-left:auto;margin-right:auto;}
+
+header h1{color:#B58900;margin-left:60px}
+header a{text-decoration:none;color:#268bd2;font-size:36px;color:#268bd2}
+header a:visited{color:#268bd2}
+
+p{margin-top:0px}
+ul,ol{margin:1em 0;padding:0}
+pre,code{font-family:'Source Code Pro'}
+.highlight{opacity:0.8}
+pre{margin:0;padding:6px 14px;font-size:24px;}
+
+h1{font-size:32px}
+h2{font-size:32px;margin-top:25px;margin-bottom:5px;letter-spacing:1px}
+h3{font-size:24px,margin-top:25px;margin-bottom:5px}
+h4{color:#dc322f;font-size:24px;margin:0;font-weight:normal}
+h1,h2,h3{color:#b58900}
+
+article{color:#839496;line-height:1.5em;font-size:24px}
+article a,article a:visited,article a:hover{text-decoration:none;color:#268bd2}
+
+#post #container{margin-top:30px}
+#post header a{font-size:20px;margin-bottom:30px}
+
+#home h1{font-size: 48px; margin-left: 0; text-align: center}
+#home #container{width: 550px;color:#859900;font-size:24px;padding-left:25px;line-height:1.5em;}
+nav{margin-bottom:20px;margin-top:50px}
+#home a,#home a:visited,#home a:hover{text-decoration:none;color:#268bd2}
+#home ul li{margin:10px 0}
+#home ul{list-style-type:none;float:left;width:50%;padding:0}
+#home article{font-size:18px}
+
+footer{margin-bottom:3em}
+hr{display:block;height:1px;border:0;border-top:1px solid #ccc;margin:1em 0;padding:0}
+@font-face { font-family: 'Source Code Pro'; font-style: normal; font-weight: 400; src: local('Source Code Pro'), local('SourceCodePro-Regular'), url(http://themes.googleusercontent.com/static/fonts/sourcecodepro/v3/mrl8jkM18OlOQN8JLgasD9Hq-FFgoDNV3GTKpHwuvtI.woff) format('woff'); }
+@font-face { font-family: 'Source Sans Pro'; font-style: normal; font-weight: 400; src: local('Source Sans Pro'), local('SourceSansPro-Regular'), url(http://themes.googleusercontent.com/static/fonts/sourcesanspro/v5/ODelI1aHBYDBqgeIAH2zlNHq-FFgoDNV3GTKpHwuvtI.woff) format('woff'); }
+</style>
+</head>
+
+<body id="post">
+<div id="container">
+  <header><a href="http://burke.libbey.me">Home</a></header>
+  <article>
+    <h1 class="article-title">Conserving File Descriptors in Go</h1>
+    <p>Go makes it very easy to write highly-concurrent applications &ndash; so easy, in
+fact, that it exposes you to Operating System limits fairly quickly.</p>
+
+<p>Imagine building a web crawler. You have a long list of URLs, and you want to
+fetch the contents of each page. In many languages, you might spawn up a number
+of worker threads, each looping, pulling a URL off the queue and fetching it,
+until the queue is empty. This is a reasonable model, and it&rsquo;s the most obvious
+choice in ruby and languages like it.</p>
+
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">crawl</span><span class="p">(</span><span class="n">queue</span><span class="p">)</span>
+  <span class="mi">1</span><span class="o">.</span><span class="n">upto</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span>
+    <span class="no">Thread</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span>
+      <span class="kp">loop</span> <span class="p">{</span> <span class="n">fetch</span><span class="p">(</span><span class="n">queue</span><span class="o">.</span><span class="n">pop</span><span class="p">)</span> <span class="p">}</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+
+
+<p>In Go, on the other hand, we have goroutines. Goroutines are cheaper to create
+and to schedule than real threads, and more of them can run at the same time
+without losing performance to thread overhead. It&rsquo;s not uncommon to have many
+hundreds or thousands of goroutines running concurrently, without incurring much
+performance overhead.</p>
+
+<p>In fact, Go is quite capable of handling thousands of HTTP requests at the same
+time. However, most operating systems won&rsquo;t let you do that by default. OS X has
+a default maximum of 256 open files per process (an HTTP request uses a File
+Descriptor). If you&rsquo;re coming to Go from a slow scripting language, this isn&rsquo;t
+something you&rsquo;ve had to think about on a daily basis, but it will be with Go.</p>
+
+<p>One obvious approach to building this web crawler in Go would be to just spawn a
+goroutine for each URL in the queue and let the scheduler figure it out. For
+example:</p>
+
+<div class="highlight"><pre><span class="kd">func</span> <span class="nx">crawl</span><span class="p">(</span><span class="nx">urlProducer</span> <span class="kd">chan</span> <span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">for</span> <span class="nx">url</span> <span class="o">:=</span> <span class="k">range</span><span class="p">(</span><span class="nx">urlProducer</span><span class="p">)</span>
+    <span class="k">go</span> <span class="nx">fetch</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>This works really well if the channel never hands off urls above a certain rate.
+If it produces too fast &ndash; if you already have 256 open files and you try to
+spawn a new HTTP request, one of two things will happen, depending in part on
+which version of Go you&rsquo;re using:</p>
+
+<ol>
+<li><p>In Go 1.0, DNS lookup will fail cryptically, claiming &ldquo;no such host&rdquo;. This is
+because DNS lookup consumes a file descriptor temporarily, and the failed
+allocation is interpreted as NXDOMAIN.</p></li>
+
+<li><p>In Go 1.1, or if you didn&rsquo;t trigger the case above in 1.0, <code>Dial</code> will simply
+return an error rather than a connection.</p></li>
+</ol>
+
+<p>The first case in particular is rather misleading, but it&rsquo;s almost always an
+indicator that you are out of File Descriptors.</p>
+
+<p>So how can you moderate your FD consumption in the above example? There are two
+simple ways:</p>
+
+<ol>
+<li><p>Worker Pool</p></li>
+
+<li><p>Semaphore</p></li>
+</ol>
+
+<p>The Worker Pool strategy is reminiscent of the ruby example above:</p>
+
+<div class="highlight"><pre><span class="kd">const</span> <span class="nx">nWorkers</span> <span class="p">=</span> <span class="mi">100</span>
+<span class="kd">func</span> <span class="nx">crawl</span><span class="p">(</span><span class="nx">urlProducer</span> <span class="kd">chan</span> <span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">nWorkers</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+    <span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">for</span> <span class="p">{</span>
+        <span class="nx">fetch</span><span class="p">(</span><span class="o">&lt;-</span><span class="nx">urlProducer</span><span class="p">)</span>
+      <span class="p">}</span>
+    <span class="p">}()</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>The outer loop runs <code>nWorkers</code> times, and spawns <code>nWorkers</code> goroutines. Each
+loops indefinitely, calling fetch synchronously with a URL from the input
+channel. This limits the concurrency to <code>nWorkers</code>, meaning that you will never
+have more than 100 HTTP requests pending, and never be consuming more than 100
+FDs as a result of this function.</p>
+
+<p>Using a semaphore is a simliar strategy, but I feel it&rsquo;s cleaner in certain
+circumstances:</p>
+
+<div class="highlight"><pre><span class="kd">const</span> <span class="nx">nTokens</span> <span class="p">=</span> <span class="mi">100</span>
+<span class="kd">func</span> <span class="nx">crawl</span><span class="p">(</span><span class="nx">urlProducer</span> <span class="kd">chan</span> <span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">sem</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">bool</span><span class="p">,</span> <span class="nx">nTokens</span><span class="p">)</span>
+  <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">nTokens</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+    <span class="nx">sem</span> <span class="o">&lt;-</span> <span class="kc">true</span>
+  <span class="p">}</span>
+  <span class="k">for</span> <span class="nx">url</span> <span class="o">:=</span> <span class="k">range</span><span class="p">(</span><span class="nx">urlProducer</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+      <span class="o">&lt;-</span> <span class="nx">sem</span>
+      <span class="k">defer</span> <span class="nx">sem</span> <span class="o">&lt;-</span> <span class="kc">true</span>
+
+      <span class="nx">fetch</span><span class="p">(</span><span class="o">&lt;-</span><span class="nx">urlProducer</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}()</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>You first pre-fill the semaphore with 100 tokens. Each time you want to start
+an HTTP request, you must first withdraw a token. If all 100 tokens are
+currently out, you must wait until one has been returned.</p>
+
+<p>The semaphore strategy accomplishes largely the same performance
+characteristics as the worker pool strategy, but one or the other can feel more
+appropriate depending on the problem. It&rsquo;s good to be familiar with both. Both
+will prevent you from exceeding the file descriptor limit (which, incidentally,
+you can adjust using <code>ulimit</code>).</p>
+
+  <article>
+  <footer><hr/></footer>
+</div>
+</body>
+</html>
+
+
