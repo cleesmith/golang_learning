@@ -1,3 +1,4 @@
 /6.824-golabs-2014
 /goblueprints
 .DS_Store
+/concurrency/semaphore/*.txt
