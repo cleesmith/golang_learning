@@ -51,8 +51,7 @@ func main() {
 	close(requests)                          // important to remember to close the channel
 
 	// resolver := par.Requests(requests).WithRedundancy(1)
-	// resolver := par.Requests(requests).WithConcurrency(numRequests)
-	resolver := par.Requests(requests).WithConcurrency(0)
+	resolver := par.Requests(requests).WithConcurrency(numRequests)
 	ctx, cancel := context.WithTimeout(context.Background(), 500*time.Millisecond)
 	// ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
 	err := resolver.DoWithContext(ctx)
