@@ -33,16 +33,17 @@ func main() {
 func (this *ExampleExtender) Visit(ctx *gocrawl.URLContext, res *http.Response, doc *goquery.Document) (interface{}, bool) {
 	// fmt.Println("visit url: ", ctx.URL(), "state: ", ctx.State)
 	fmt.Printf("\"%v\",\n", ctx.URL())
-	urls := processLinks(doc)
+	fmt.Printf("\t%T\t%+v\n", doc, doc)
+	// urls := processLinks(doc)
 	links := make(map[*url.URL]interface{})
-	i, _ := ctx.State.(int)
-	nextDepth := i - 1
-	if nextDepth <= 0 {
-		return nil, false
-	}
-	for _, u := range urls {
-		links[u] = nextDepth
-	}
+	// i, _ := ctx.State.(int)
+	// nextDepth := i - 1
+	// if nextDepth <= 0 {
+	// 	return nil, false
+	// }
+	// for _, u := range urls {
+	// 	links[u] = nextDepth
+	// }
 	return links, false
 }
 
