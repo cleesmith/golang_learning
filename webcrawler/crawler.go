@@ -17,6 +17,7 @@ type Fetcher interface {
 
 func main() {
 	Crawl("http://golang.org/", 4, fetcher)
+	// Crawl("http://cellipede.com/", 2, fetcher)
 }
 
 // Crawl crawls the web using `fetcher`, processing the content found.

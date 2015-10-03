@@ -34,13 +34,14 @@ import (
 
 func main() {
 	// resp, err := http.Get("http://amazon.com/")
-	resp, err := http.Get("http://cellipede.com:4235/")
+	// resp, err := http.Get("http://cellipede.com/")
 	// resp, err := http.Get("http://cleesmith.github.io/")
 	// resp, err := http.Get("https://github.com/cleesmith") // has a "UA-"
 	// resp, err := http.Get("https://www.youtube.com/user/cleesmith2006/about")
 	// resp, err := http.Get("https://www.youtube.com/watch?v=Eacoqt4BtMc")
 	// resp, err := http.Get("https://www.youtube.com/channel/UC-5pPjfUKWRo1fAZMH1qDUg")
 	// resp, err := http.Get("https://ruby5.codeschool.com/") // has a "UA-"
+	resp, err := http.Get("https://golang.org/")
 	if err != nil {
 		fmt.Printf("ERROR: http.Get: %v\n", err)
 		panic(err)

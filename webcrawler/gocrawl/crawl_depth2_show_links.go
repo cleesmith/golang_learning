@@ -27,7 +27,7 @@ func main() {
 	c := gocrawl.NewCrawlerWithOptions(opts)
 	// c.Run(gocrawl.S{"https://duckduckgo.com/": DEPTH})
 	// c.Run(gocrawl.S{"http://cellipede.com:4235/": DEPTH})
-	c.Run(gocrawl.S{"http://cleesmith.github.io/": DEPTH})
+	c.Run(gocrawl.S{"http://cellipede.com/": DEPTH})
 }
 
 func (this *ExampleExtender) Visit(ctx *gocrawl.URLContext, res *http.Response, doc *goquery.Document) (interface{}, bool) {
