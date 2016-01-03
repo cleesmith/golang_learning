@@ -1,20 +1,20 @@
 package main
 
 import (
-  "fmt"
-  "net/http"
+	"fmt"
+	"net/http"
 )
 
 func helloHandler(w http.ResponseWriter, r *http.Request) {
-  fmt.Fprintln(w, "Hello World from Go!")
+	fmt.Fprintln(w, "Hello World from Go!")
 }
 
 func main() {
-  http.HandleFunc("/", helloHandler)
+	http.HandleFunc("/", helloHandler)
 
-  fmt.Println("Started, serving at 8080")
-  err := http.ListenAndServe(":8080", nil)
-  if err != nil {
-    panic("ListenAndServe: " + err.Error())
-  }
+	fmt.Println("Started, serving at 8080")
+	err := http.ListenAndServe(":8080", nil)
+	if err != nil {
+		panic("ListenAndServe: " + err.Error())
+	}
 }

@@ -11,6 +11,7 @@ var world = []byte("world")
 
 func main() {
 	db, err := bolt.Open("bolt.db", 0644, nil)
+	fmt.Printf("db=%T=%+v\n", db, db)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -20,7 +20,7 @@ func main() {
 		log.Ldate|log.Ltime|log.LUTC|log.Lmicroseconds)
 	chttp.Handle("/", http.FileServer(http.Dir("./")))
 	http.HandleFunc("/", HomeHandler)
-	http.ListenAndServe(":80", nil)
+	http.ListenAndServe(":8080", nil)
 }
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
