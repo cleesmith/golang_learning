@@ -12,19 +12,29 @@ import (
 func main() {
 	flag.Parse()
 
+	// see: https://gist.github.com/rcrowley/5474430
+	//      for handling SIGINT and SIGTERM
 	// handle Ctrl+C interrupt:
-	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, os.Interrupt, os.Kill)
-	defer signal.Stop(quit)
+	exitChan := make(chan os.Signal, 1)
+	// the following seems to work for:
+	//   The only signal values guaranteed to be present on all systems are
+	//   Interrupt (send the process an interrupt) and
+	//   Kill (force the process to exit).
+	//   quote from: https://golang.org/pkg/os/#Signal
+	signal.Notify(exitChan, os.Kill, os.Interrupt)
+	defer signal.Stop(exitChan)
 
 	for {
 		select {
-		case <-time.After(1 * time.Second):
-			panicIf(blink(false))
-			// panicIf(blink(true))
-		case <-quit:
+		// case <-time.After(1 * time.Second):
+		// 	panicIf(blink(false))
+		// 	// panicIf(blink(true))
+		case <-exitChan:
 			fmt.Println("\nctrl+c pressed")
 			return
+		default:
+			// do
+			fmt.Println("default")
 		}
 	}
 	time.Sleep(10 * time.Second)
@@ -39,6 +49,7 @@ func blink(status bool) (err error) {
 }
 
 func panicIf(err error) {
+	// fmt.Printf("\npanicIf: err=%v\n", err)
 	if err != nil {
 		panic(err)
 	}
