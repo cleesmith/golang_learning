@@ -10,7 +10,7 @@ import (
 
 func main() {
 	// db, err := maxminddb.Open("GeoIP2-Connection-Type-Test.mmdb")
-	db, err := maxminddb.Open("../GeoLite2-City.mmdb")
+	db, err := maxminddb.Open("../GeoLite2-City.mmdb") // ~40MB
 	if err != nil {
 		log.Fatal(err)
 	}

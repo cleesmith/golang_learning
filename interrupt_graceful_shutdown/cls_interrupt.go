@@ -24,7 +24,7 @@ func main() {
 	//   Kill (force the process to exit).
 	// note: a "kill -9 pid" on OS X never reaches this program
 	// note: a "kill -15 pid" is the same as "kill pid" (it's the default)
-	//                    KILL -15 pid             ctrl+c  KILL -9 pid      KILL -1 pid
+	//                      KILL -15 pid             ctrl+c  KILL -9 pid      KILL -1 pid
 	signal.Notify(signalCh, syscall.SIGTERM, syscall.SIGINT, syscall.SIGKILL, syscall.SIGHUP)
 	// SIGHUP should cause us to re-read config files and start over
 	defer func() {
