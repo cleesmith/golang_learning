@@ -6,15 +6,13 @@ import (
 	"reflect"
 	"time"
 
-	"./search"
 	"gopkg.in/olivere/elastic.v3" // see: https://github.com/olivere/elastic
 )
 
 const (
-	EsHostPort       = "http://192.168.0.31:9200"
 	TsLayout         = "2006-01-02T15:04:05.000Z"
 	MaxSearchResults = 5
-	TopTen           = 10
+	EsHostPort       = "http://192.168.0.31:9200"
 )
 
 type EventU2Record struct {
@@ -102,17 +100,56 @@ func main() {
 	// note: this is really pinging a node so the URL string must be provided:
 	info, code, err := client.Ping(EsHostPort).Do()
 	if err != nil {
+		// Handle error
 		panic(err)
 	}
 	fmt.Printf("\nPing: Elasticsearch: return code: %d \t version: %s\n", code, info.Version.Number)
 
-	searchResult, err := search.EsQuery(client, MaxSearchResults, "unifiedbeat-*", `event_id:200`)
+	// search via string query: lucene AND/OR/NOT/etc.
+	// stringQuery := elastic.NewQueryStringQuery(`packet_payload:localhost AND event_id:2`)
+	// stringQuery := elastic.NewQueryStringQuery(`192.168.1.102 AND ftp AND ACK=true`)
+	// stringQuery := elastic.NewQueryStringQuery(`"5f 25 25 7c"`)
+	stringQuery := elastic.NewQueryStringQuery(`event_id:200`)
+	// stringQuery := elastic.NewQueryStringQuery(`*`) // may NOT be empty or blank !!!
+	// see: https://github.com/olivere/elastic/blob/release-branch.v3/search.go#L315
+	// for "searchResult" struct:
+	// type SearchResult struct {
+	//  TookInMillis int64         `json:"took"`         // search time in milliseconds
+	//  ScrollId     string        `json:"_scroll_id"`   // only used with Scroll and Scan operations
+	//  Hits         *SearchHits   `json:"hits"`         // the actual search hits
+	//  Suggest      SearchSuggest `json:"suggest"`      // results from suggesters
+	//  Aggregations Aggregations  `json:"aggregations"` // results from aggregations
+	//  TimedOut     bool          `json:"timed_out"`    // true if the search timed out
+	//  Error *ErrorDetails `json:"error,omitempty"` // only used in MultiGet
+	// }
+	searchResult, err := client.Search().
+		Index("unifiedbeat-*").
+		Query(stringQuery).
+		Size(MaxSearchResults).
+		// Pretty(true).
+		Do()
+
+	// search via term query
+	// termQuery := elastic.NewTermQuery("packet_dump", "localhost")
+	// termQuery := elastic.NewTermQuery("packet_payload", "localhost")
+	// searchResult, err := client.Search().
+	//  Index("unifiedbeat-*").
+	//  Query(termQuery).
+	//  Size(MaxSearchResults).
+	//  Do()
+
+	// search like "query": {"match_all":{}} in Sense:
+	// searchResult, err := client.Search().
+	//  Index("unifiedbeat-*").
+	//  Size(MaxSearchResults).
+	//  Do()
 	if err != nil {
 		e, ok := err.(*elastic.Error)
 		if !ok {
 			fmt.Printf("Search failed with unknown error=%T=%#v\n", err, err)
 		}
 		fmt.Printf("Search failed with status %v and error:\n%s\n", e.Status, e.Details)
+		// fmt.Printf("Search failed=%T=%#v\n", e.Details, e.Details)
 		return
 	}
 	fmt.Printf("TotalHits=%T=%#v\n", searchResult.TotalHits(), searchResult.TotalHits())
@@ -120,38 +157,48 @@ func main() {
 	fmt.Printf("\nsearchResult.Hits=%T \t count=%#v :\n%#v\n", searchResult.Hits, len(searchResult.Hits.Hits), searchResult.Hits)
 	fmt.Printf("\nFound a total of %d unified2 records\n", searchResult.TotalHits())
 
+	// ****************************************************
+	// * at this point, just return "searchResult", and
+	// * allow the caller to perform additional processing
+	// * coz having different record types means there
+	// * is no generic way to return the results
+	// ****************************************************
+
 	// iterate through results with full control over each step:
 	if searchResult.Hits != nil {
 		fmt.Printf("total=%d\n", searchResult.Hits.TotalHits)
 		// see: https://github.com/olivere/elastic/blob/release-branch.v3/search.go#L354
 		// type SearchHits struct {
-		// 	 TotalHits int64        `json:"total"`     // total number of hits found
-		// 	 MaxScore  *float64     `json:"max_score"` // maximum score of all hits
-		// 	 Hits      []*SearchHit `json:"hits"`      // the actual hits returned
+		//   TotalHits int64        `json:"total"`     // total number of hits found
+		//   MaxScore  *float64     `json:"max_score"` // maximum score of all hits
+		//   Hits      []*SearchHit `json:"hits"`      // the actual hits returned
 		// }
 		// // SearchHit is a single hit.
 		// type SearchHit struct {
-		// 	 Score          *float64                       `json:"_score"`          // computed score
-		// 	 Index          string                         `json:"_index"`          // index name
-		// 	 Type           string                         `json:"_type"`           // type meta field
-		// 	 Id             string                         `json:"_id"`             // external or internal
-		// 	 Uid            string                         `json:"_uid"`            // uid meta field (see MapperService.java for all meta fields)
-		// 	 Timestamp      int64                          `json:"_timestamp"`      // timestamp meta field
-		// 	 TTL            int64                          `json:"_ttl"`            // ttl meta field
-		// 	 Routing        string                         `json:"_routing"`        // routing meta field
-		// 	 Parent         string                         `json:"_parent"`         // parent meta field
-		// 	 Version        *int64                         `json:"_version"`        // version number, when Version is set to true in SearchService
-		// 	 Sort           []interface{}                  `json:"sort"`            // sort information
-		// 	 Highlight      SearchHitHighlight             `json:"highlight"`       // highlighter information
-		// 	 Source         *json.RawMessage               `json:"_source"`         // stored document source
-		// 	 Fields         map[string]interface{}         `json:"fields"`          // returned fields
-		// 	 Explanation    *SearchExplanation             `json:"_explanation"`    // explains how the score was computed
-		// 	 MatchedQueries []string                       `json:"matched_queries"` // matched queries
-		// 	 InnerHits      map[string]*SearchHitInnerHits `json:"inner_hits"`      // inner hits with ES >= 1.5.0
+		//   Score          *float64                       `json:"_score"`          // computed score
+		//   Index          string                         `json:"_index"`          // index name
+		//   Type           string                         `json:"_type"`           // type meta field
+		//   Id             string                         `json:"_id"`             // external or internal
+		//   Uid            string                         `json:"_uid"`            // uid meta field (see MapperService.java for all meta fields)
+		//   Timestamp      int64                          `json:"_timestamp"`      // timestamp meta field
+		//   TTL            int64                          `json:"_ttl"`            // ttl meta field
+		//   Routing        string                         `json:"_routing"`        // routing meta field
+		//   Parent         string                         `json:"_parent"`         // parent meta field
+		//   Version        *int64                         `json:"_version"`        // version number, when Version is set to true in SearchService
+		//   Sort           []interface{}                  `json:"sort"`            // sort information
+		//   Highlight      SearchHitHighlight             `json:"highlight"`       // highlighter information
+		//   Source         *json.RawMessage               `json:"_source"`         // stored document source
+		//   Fields         map[string]interface{}         `json:"fields"`          // returned fields
+		//   Explanation    *SearchExplanation             `json:"_explanation"`    // explains how the score was computed
+		//   MatchedQueries []string                       `json:"matched_queries"` // matched queries
+		//   InnerHits      map[string]*SearchHitInnerHits `json:"inner_hits"`      // inner hits with ES >= 1.5.0
 		// }
 		for _, hit := range searchResult.Hits.Hits {
-			// hit.Index is "_index"
-			// hit.Type is "_type"
+			// hit.Index = "_index"
+			// hit.Type = "_type"
+			// fmt.Printf("\n-----\nhit: Index=%v Type=%v\n", hit.Index, hit.Type)
+			// fmt.Printf("\n-----\nhit=%T=%#v\n", hit, hit)
+
 			switch hit.Type {
 			case "event":
 				var event EventU2Record
@@ -159,7 +206,7 @@ func main() {
 				// fmt.Printf("\n-----\nhit.Source=%T=%#v\n", hit.Source, hit.Source)
 				// raw, err := hit.Source.MarshalJSON()
 				// if err != nil {
-				// 	return
+				//  return
 				// }
 				// fmt.Printf("\n-----\nraw=%T=%#v\n", raw, raw)
 				// err = json.Unmarshal(raw, &event)
@@ -233,39 +280,39 @@ func main() {
 			// why Label? future = OSSEC, BRO_LOG, etc.
 			// Label = "U2E" // "U2P", "U2X"
 			fmt.Printf("\n%v. hit=%#v\n", i, hit)
-			// 	if t, ok := hit.(U2Record); ok {
-			// 		fmt.Printf("doc=%T=%#v\n", t, t)
-			// 	}
+			//  if t, ok := hit.(U2Record); ok {
+			//    fmt.Printf("doc=%T=%#v\n", t, t)
+			//  }
 		}
 		fmt.Println("... AnyU2Record ********************************************************")
 	} else {
 		fmt.Printf("no hits!\n")
 	}
 
-	fmt.Println("\nCount\t|  Term")
-	fmt.Println("=====\t|  ==================")
-	aField := "signature.raw"
-	searchResult, err = search.EsTermsAgg(client, TopTen, "unifiedbeat-*", "*", aField)
+	// aggs
+	fmt.Println("\nCount Source IPs:")
+	all := elastic.NewMatchAllQuery()
+	srcIpAgg := elastic.NewTermsAggregation().Field("src_ip").Size(100).OrderByCountDesc()
+	aQuery := client.Search().Index("unifiedbeat-*").Query(all).Size(0).Pretty(true)
+	aQuery = aQuery.Aggregation("src_ip", srcIpAgg)
+	searchResult, err = aQuery.Do()
 	if err != nil {
-		e, ok := err.(*elastic.Error)
-		if !ok {
-			fmt.Printf("EsTermsAgg: failed with unknown error=%T=%#v\n", err, err)
-		}
-		fmt.Printf("EsTermsAgg: failed with status %v and error:\n%s\n", e.Status, e.Details)
-		return
+		fmt.Printf("search error: %#v\n", err)
 	}
+	// fmt.Printf("\nsearchResult=%T :\n%#v\n", searchResult, searchResult)
+
 	agg := searchResult.Aggregations
 	if agg == nil {
-		fmt.Printf("agg is nil!")
+		fmt.Printf("expected Aggregations != nil; got: nil")
 	}
-	termsAggResult, ok := agg.Terms(aField)
-	if ok {
-		fmt.Printf("\ntermsAggResult=%T :\n%#v\n", termsAggResult, termsAggResult)
-		// fmt.Printf("\nbuckets=%T :\n%#v\n", termsAggResult.Buckets, termsAggResult.Buckets)
-		for _, bucket := range termsAggResult.Buckets {
-			fmt.Printf("%v\t|  %v\n", bucket.DocCount, bucket.Key)
-		}
-		fmt.Printf("#buckets=%v\n", len(termsAggResult.Buckets))
+	termsAggResult, found := agg.Terms("src_ip")
+	if !found {
+		fmt.Printf("expected %v; got: %v", true, found)
+	}
+	// fmt.Printf("\ntermsAggResult=%T :\n%#v\n", termsAggResult, termsAggResult)
+	// fmt.Printf("\nbuckets=%T :\n%#v\n", termsAggResult.Buckets, termsAggResult.Buckets)
+	for _, bucket := range termsAggResult.Buckets {
+		fmt.Printf("%v \t %v\n", bucket.DocCount, bucket.Key)
 	}
 
 }
