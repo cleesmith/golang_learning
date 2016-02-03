@@ -242,30 +242,25 @@ func main() {
 		fmt.Printf("no hits!\n")
 	}
 
-	fmt.Println("\nCount\t|  Term")
-	fmt.Println("=====\t|  ==================")
+	// aField := "event_second"
 	aField := "signature.raw"
-	searchResult, err = search.EsTermsAgg(client, TopTen, "unifiedbeat-*", "*", aField)
-	if err != nil {
-		e, ok := err.(*elastic.Error)
-		if !ok {
-			fmt.Printf("EsTermsAgg: failed with unknown error=%T=%#v\n", err, err)
+	fmt.Printf("\nCount\t|  %s\n", aField)
+	fmt.Println("=====\t|  ==================")
+	aggResult, err := search.EsTermsAgg(client, TopTen, "unifiedbeat-*", aField)
+	if aggResult != nil {
+		// fmt.Printf("\naggResult=%T :\n%#v\n", aggResult, aggResult)
+		// fmt.Printf("\nbuckets=%T :\n%#v\n", aggResult.Buckets, aggResult.Buckets)
+		for _, bucket := range aggResult.Buckets {
+			if aField == "event_second" {
+				ut := time.Unix(int64(bucket.Key.(float64)), 0)
+				fmt.Printf("%v\t|  %v\n", bucket.DocCount, ut.UTC().Format(TsLayout))
+			} else {
+				fmt.Printf("%v\t|  %v\n", bucket.DocCount, bucket.Key)
+			}
 		}
-		fmt.Printf("EsTermsAgg: failed with status %v and error:\n%s\n", e.Status, e.Details)
-		return
-	}
-	agg := searchResult.Aggregations
-	if agg == nil {
-		fmt.Printf("agg is nil!")
-	}
-	termsAggResult, ok := agg.Terms(aField)
-	if ok {
-		fmt.Printf("\ntermsAggResult=%T :\n%#v\n", termsAggResult, termsAggResult)
-		// fmt.Printf("\nbuckets=%T :\n%#v\n", termsAggResult.Buckets, termsAggResult.Buckets)
-		for _, bucket := range termsAggResult.Buckets {
-			fmt.Printf("%v\t|  %v\n", bucket.DocCount, bucket.Key)
-		}
-		fmt.Printf("#buckets=%v\n", len(termsAggResult.Buckets))
+		fmt.Printf("#buckets=%v\n", len(aggResult.Buckets))
+	} else {
+		fmt.Printf("\nEmpty: aggResult=%T=%#v\n", aggResult, aggResult)
 	}
 
 }
