@@ -65,8 +65,14 @@ func (h *httpStream) run() {
 			log.Println("Error reading stream", h.net, h.transport, ":", err)
 		} else {
 			bodyBytes := tcpreader.DiscardBytesToEOF(req.Body)
+			if bodyBytes > 0 {
+				log.Printf("\n\nReceived request from stream:\n")
+				log.Printf("net: %T\t%v\tsrcIP=%v\tdstIP=%v\n", h.net, h.net, h.net.Src(), h.net.Dst())
+				log.Printf("transport=%v\tsport=%v\tdport=%v\n", h.transport, h.transport.Src(), h.transport.Dst())
+				log.Printf("req: %T\n%v\n", req, req)
+				log.Printf("request bodyBytes=%#v\n", bodyBytes)
+			}
 			req.Body.Close()
-			log.Println("Received request from stream", h.net, h.transport, ":", req, "with", bodyBytes, "bytes in request body")
 		}
 	}
 }
