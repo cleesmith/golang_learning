@@ -31,7 +31,8 @@ var snaplen = flag.Int("s", 1600, "SnapLen for pcap packet capture")
 var filter = flag.String("f", "tcp and dst port 80", "BPF filter for pcap")
 var logAllPackets = flag.Bool("v", false, "Logs every packet in great detail")
 
-// Build a simple HTTP request parser using tcpassembly.StreamFactory and tcpassembly.Stream interfaces
+// Build a simple HTTP request parser using
+// tcpassembly.StreamFactory and tcpassembly.Stream interfaces
 
 // httpStreamFactory implements tcpassembly.StreamFactory
 type httpStreamFactory struct{}
@@ -65,13 +66,14 @@ func (h *httpStream) run() {
 			log.Println("Error reading stream", h.net, h.transport, ":", err)
 		} else {
 			bodyBytes := tcpreader.DiscardBytesToEOF(req.Body)
-			if bodyBytes > 0 {
-				log.Printf("\n\nReceived request from stream:\n")
-				log.Printf("net: %T\t%v\tsrcIP=%v\tdstIP=%v\n", h.net, h.net, h.net.Src(), h.net.Dst())
-				log.Printf("transport=%v\tsport=%v\tdport=%v\n", h.transport, h.transport.Src(), h.transport.Dst())
-				log.Printf("req: %T\n%v\n", req, req)
-				log.Printf("request bodyBytes=%#v\n", bodyBytes)
-			}
+			// if bodyBytes > 0 {
+			log.Printf("Received request from stream:\n")
+			log.Printf("h.r=>%T:\n%#v\n", h.r, h.r)
+			log.Printf("net: %T\t%v\tsrcIP=%v\tdstIP=%v\n", h.net, h.net, h.net.Src(), h.net.Dst())
+			log.Printf("transport=%v\tsport=%v\tdport=%v\n", h.transport, h.transport.Src(), h.transport.Dst())
+			log.Printf("req: %T\n%v\n", req, req)
+			log.Printf("request bodyBytes=%#v\n", bodyBytes)
+			// }
 			req.Body.Close()
 		}
 	}
@@ -87,8 +89,9 @@ func main() {
 		log.Printf("Reading from pcap dump %q", *fname)
 		handle, err = pcap.OpenOffline(*fname)
 	} else {
-		log.Printf("Starting capture on interface %q", *iface)
-		handle, err = pcap.OpenLive(*iface, int32(*snaplen), true, pcap.BlockForever)
+		log.Fatalln("Error: pcap file name is required!")
+		// log.Printf("Starting capture on interface %q", *iface)
+		// handle, err = pcap.OpenLive(*iface, int32(*snaplen), true, pcap.BlockForever)
 	}
 	if err != nil {
 		log.Fatal(err)
@@ -124,6 +127,9 @@ func main() {
 				continue
 			}
 			tcp := packet.TransportLayer().(*layers.TCP)
+			log.Printf("\n.......................................................\n")
+			log.Printf("packet:\n")
+			log.Printf("packet.Metadata().Timestamp=%T=%v=%v:\n%#v\n", packet.Metadata().Timestamp, packet.Metadata().Timestamp, packet.Metadata().Timestamp.UTC(), packet.Metadata().Timestamp)
 			assembler.AssembleWithTimestamp(packet.NetworkLayer().NetworkFlow(), tcp, packet.Metadata().Timestamp)
 
 		case <-ticker:

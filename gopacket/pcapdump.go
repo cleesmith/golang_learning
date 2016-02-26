@@ -1,9 +1,3 @@
-// Copyright 2012 Google, Inc. All rights reserved.
-//
-// Use of this source code is governed by a BSD-style license
-// that can be found in the LICENSE file in the root of the source
-// tree.
-
 // The pcapdump binary implements a tcpdump-like command line tool with gopacket
 // using pcap as a backend data collection mechanism.
 package main
@@ -69,6 +63,5 @@ func main() {
 			}
 		}
 	}
-
 	dumpcommand.Run(handle)
 }
