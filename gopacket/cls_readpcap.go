@@ -43,7 +43,8 @@ func main() {
 		log.Printf("Processing file %s\n", file.filename)
 
 		packets := []gopacket.Packet{}
-		if handle, err := pcap.OpenOffline(file.filename); err != nil {
+		handle, err := pcap.OpenOffline(file.filename)
+		if err != nil {
 			log.Fatal(err)
 		} else {
 			packetSource := gopacket.NewPacketSource(handle, handle.LinkType())
@@ -55,17 +56,30 @@ func main() {
 		if len(packets) != file.num {
 			log.Fatal("Incorrect number of packets, want", file.num, "got", len(packets))
 		}
+
 		for i, p := range packets {
-			log.Printf("\n%v. packet:\n", i+1)
+
+			// see "type PacketMetadata struct" and "type CaptureInfo struct"
+			// in github.com/google/gopacket/packet.go:
+			log.Printf("\n%v. packet=%v:\n", i+1, p.Metadata().CaptureInfo.Timestamp.UTC())
 			// log.Printf("\n%v. packet:\n%#v\n", i+1, p)
 			// log.Printf("file.expectedLayers=%T=%#v\n", file.expectedLayers, file.expectedLayers)
 			// see issue: https://github.com/google/gopacket/issues/175
-			log.Printf(p.Dump())
-			for _, layertype := range file.expectedLayers {
-				if p.Layer(layertype) == nil {
-					log.Fatal("Packet", i, "has no layer type\n%s", layertype, p.Dump())
-				}
+			// log.Printf(p.Dump()) // fails in Go 1.6, see https://golang.org/doc/go1.6#reflect
+			// log.Printf(p.String()) // fails in Go 1.6, see https://golang.org/doc/go1.6#reflect
+
+			// Iterate over all layers, printing out each layer type
+			log.Println("All packet layers:")
+			for _, layer := range p.Layers() {
+				log.Println("- ", layer.LayerType())
 			}
-		}
+
+			// for _, layertype := range file.expectedLayers {
+			// 	if p.Layer(layertype) == nil {
+			// 		log.Fatal("Packet", i, "has no layer type\n%s", layertype, p.Dump())
+			// 	}
+			// }
+
+		} // for range packets
 	}
 }
