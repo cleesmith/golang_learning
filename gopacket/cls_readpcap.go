@@ -56,10 +56,11 @@ func main() {
 			log.Fatal("Incorrect number of packets, want", file.num, "got", len(packets))
 		}
 		for i, p := range packets {
+			log.Printf("\n%v. packet:\n", i+1)
+			// log.Printf("\n%v. packet:\n%#v\n", i+1, p)
+			// log.Printf("file.expectedLayers=%T=%#v\n", file.expectedLayers, file.expectedLayers)
 			// see issue: https://github.com/google/gopacket/issues/175
-			// log.Printf(p.Dump())
-			log.Printf("\n%v. packet:\n%#v\n", i+1, p)
-			log.Printf("file.expectedLayers=%T=%#v\n", file.expectedLayers, file.expectedLayers)
+			log.Printf(p.Dump())
 			for _, layertype := range file.expectedLayers {
 				if p.Layer(layertype) == nil {
 					log.Fatal("Packet", i, "has no layer type\n%s", layertype, p.Dump())
