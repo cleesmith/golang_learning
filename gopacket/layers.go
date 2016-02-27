@@ -10,8 +10,6 @@ import (
 	"github.com/google/gopacket/pcap"
 )
 
-var filename = flag.String("r", "", "Filename of pcap file to read from")
-
 func usage() {
 	fmt.Fprintf(os.Stderr, "usage: go run layers.go file.pcap\n")
 	os.Exit(1)
