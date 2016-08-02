@@ -76,7 +76,7 @@ func scrape(url string, chL chan string, chU chan string, chDone chan bool) {
 	z := html.NewTokenizer(b)
 	for {
 		tt := z.Next()
-		fmt.Printf("z.Next=%T=%+v\n", tt, tt)
+		// fmt.Printf("z.Next=%T=%+v\n", tt, tt)
 
 		switch tt {
 		case html.ErrorToken:
@@ -104,7 +104,7 @@ func scrape(url string, chL chan string, chU chan string, chDone chan bool) {
 				uas := re.FindAllString(string(tn.Data), -1)
 				if len(uas) > 0 {
 					for _, ua := range uas {
-						fmt.Printf(">>>>> ua=%T=%+v <<<<<\n", ua, ua)
+						// fmt.Printf(">>>>> ua=%T=%+v <<<<<\n", ua, ua)
 						chU <- ua
 					}
 				}
